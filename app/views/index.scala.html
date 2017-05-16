@@ -1,0 +1,21 @@
+@import nl.sogyo.kbd._
+
+@(patternForm: Form[Pattern])(implicit messages: Messages)
+
+@main("Welcome to KBD") {
+<h1> Welcome to KBD! </h1>
+
+@helper.form(routes.HomeController.index) {
+    @helper.repeatWithIndex(patternForm("boxes")) { (s, trackNumber) =>
+        <div class="singleTrack" id='@trackNumber'>
+        @helper.repeatWithIndex(s){ (c, beat) =>
+            @helper.input(c){ (id, name, isChecked, args) =>
+            <input type='checkbox' class='pccheckbox' id='name'
+                   data-beat='@beat' data-track='nothing'
+                   @if(isChecked.get== "true") { checked } else {} />
+            }
+        }
+        </div>
+    }
+}
+}
