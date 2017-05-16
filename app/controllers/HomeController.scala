@@ -31,8 +31,10 @@ class HomeController @Inject() extends Controller {
     )
     val p = Pattern(Vector(Vector(true, false, true, false), Vector(false, true, false, true)))
     val filledForm = form.fill(p)
+
+    val testMap = Map(0 -> "Windows Ding.wav", 1 -> "Windows Error.wav")
     Action { implicit request =>
-      Ok(views.html.index(filledForm))
+      Ok(views.html.index(testMap)(filledForm))
     }
   }
 }
