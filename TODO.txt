@@ -1,0 +1,34 @@
+* TECHNICAL: JS DOM-based tests
+** Auto download? JS CSRF issues
+** Curl/bash? PowerShell has curl equivalent!
+*** Set up /tests/1 ... /tests/n urls with varying contents
+*** Automatically Download, paste <body /> contents in separate Jasmine SpecRunners, run tests.
+*** Concat test result bodies again?
+*** Set div with test things to hidden?
+
+* Playback (JS)
+
+* Keyboard controls (JS)
+** Highlighting current beat
+
+* Changing length/tracks (Scala)
+** Should pattern length be a minimum or an actual length?
+** Immutable patterns?
+
+* Saving (Scala/DB (SQL?))
+** JDBC plugin included in Play, H2 for tests?
+** Slick?
+
+* Users (Scala/DB)
+
+* Looks (Scala (HTML)/CSS)
+
+* Track annotations e.g. instruments (Scala)
+
+* Pattern annotations (Scala)
+
+* Sharing
+
+* Changing parameters (length/tracks) without reload (JS?)
+** JS dynamic generation of checkboxes?
+** AJAX?

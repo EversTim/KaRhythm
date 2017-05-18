@@ -14,6 +14,7 @@ describe("A Player", function() {
   }
 
   beforeAll(function() {
+    var container = document.createElement("div");
     var audio;
     var checkbox;
     var outerDiv;
@@ -36,14 +37,18 @@ describe("A Player", function() {
         checkboxDiv.append(checkbox);
         outerDiv.append(checkboxDiv);
       }
-      document.body.append(outerDiv);
+      container.append(outerDiv);
     }
 
     for (i = 0; i < tracks; i++) {
       audio = document.createElement("audio");
       audio.dataset.tracknumber = i;
-      document.body.append(audio);
+      container.append(audio);
     }
+
+    container.style.visibility = "hidden";
+
+    document.body.append(container);
 
     document.addEventListener('keydown', function(e) {
       player.onKeyDown(e)
@@ -132,7 +137,7 @@ describe("A Player", function() {
     }
   });
 
-  it("should be able to retrieve an audio element by tracknumber", function () {
+  it("should be able to retrieve an audio element by tracknumber", function() {
     var elem = player.getAudioElementByTrackNumber("0");
     expect(elem.dataset.tracknumber).toBe("0");
   });

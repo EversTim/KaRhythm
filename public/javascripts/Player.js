@@ -75,7 +75,8 @@ function Player() {
         doSleep = true;
       }
       if (callback === undefined) {
-        callback = this.play
+        //callback = this.play
+        callback = function(a, b, c){};
       }
       var i, j;
       for (i = 0; i < _length; i++) {
@@ -100,15 +101,6 @@ function Player() {
         }
       }
       throw 'AudioElementForTrackNotFoundException';
-    },
-    play: function(beat, track, doPlay) {
-      var nb;
-      var audio;
-      if (doPlay) {
-        nb = this.getCheckbox(beat, track).dataset.tracknumber;
-        audio = this.getAudioElementByTrackNumber(nb);
-        audio.play();
-      }
     }
   }
 };

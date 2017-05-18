@@ -1,12 +1,16 @@
-var player = new Player();
+var player;
 
-document.addEventListener('keydown', function(e) {
-  player.onKeyDown(e, function() {
-    if (/^[a-z]$/.test(e.key) || e.key === "Escape") {
-      alert(e.key)
-    }
-  })
-});
+window.onload = function() {
+  player = new Player();
 
-player.setLengthAndTracksAndFindCheckboxes(4, 2);
-player.playLoopOnce();
+  document.addEventListener('keydown', function(e) {
+    player.onKeyDown(e, function() {
+      if (/^[a-z]$/.test(e.key) || e.key === "Escape") {
+        alert(e.key)
+      }
+    })
+  });
+
+  player.setLengthAndTracksAndFindCheckboxes(4, 2);
+  player.playLoopOnce();
+}

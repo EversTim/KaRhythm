@@ -6,6 +6,7 @@ import play.api.data._
 import play.api.data.Forms._
 import play.api.Play.current
 import play.api.i18n.Messages.Implicits._
+import play.api.Logger
 
 import nl.sogyo.kbd._
 
@@ -24,12 +25,19 @@ class HomeController @Inject() extends Controller {
    * a path of `/`.
    */
   def index: Action[AnyContent] = {
+    createAction(Pattern.defaultPattern)
+  }
+
+  def test(id: Int): Action[AnyContent] = {
+    createAction(Pattern.testPatterns(id))
+  }
+
+  def createAction(p: Pattern): Action[AnyContent] = {
     val form = Form(
       mapping(
         "boxes" -> seq(seq(boolean))
       )(Pattern.apply)(Pattern.unapply)
     )
-    val p = Pattern(Vector(Vector(true, false, true, false), Vector(false, true, false, true)))
     val filledForm = form.fill(p)
 
     val testMap = Map(0 -> "Windows Ding.wav", 1 -> "Windows Error.wav")
