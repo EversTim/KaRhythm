@@ -11,6 +11,5 @@ window.onload = function() {
     })
   });
 
-  player.setLengthAndTracksAndFindCheckboxes(4, 2);
   player.playLoopOnce();
 }

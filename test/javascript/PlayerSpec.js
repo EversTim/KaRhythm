@@ -26,7 +26,6 @@ describe("A Player", function() {
 
   beforeEach(function() {
     player = new Player();
-    player.setLengthAndTracksAndFindCheckboxes(player.getLength(), player.getTracks());
   });
 
   afterEach(function() {
