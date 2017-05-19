@@ -1,13 +1,28 @@
 function Player() {
   var _isPlaying = false;
 
+  function getDataFromPage() {
+    _data = Utilities.makeArray(_tracks, _length)
+    var i, j;
+    for (i = 0; i < _tracks; i++) {
+      for (j = 0; j < _length; j++) {
+        if (this.getCheckbox(i, j).checked) {
+          _data[i][j] = true;
+        } else {
+          _data[i][j] = false;
+        }
+      }
+    }
+  }
+
+  var _checkboxes = document.getElementsByClassName("pccheckbox")
+
+  var _pattern = new Pattern(getDataFromPage);
+
   var _audioElements = document.getElementsByTagName("audio");
   var _numberOfAudioElements = _audioElements.length;
 
-  var _length = document.getElementById("length").innerHTML;
-  var _tracks = document.getElementById("tracks").innerHTML;
-  var _checkboxes = document.getElementsByClassName("pccheckbox")
-  if (_checkboxes.length != _length * _tracks) {
+  if (_checkboxes.length != _pattern.getLength() * _pattern.getTracks()) {
     throw 'LengthTrackBoxCountMismatch';
   }
 
@@ -45,7 +60,7 @@ function Player() {
     },
     playAllOnce: function() {
       var i;
-      for (i = 0; i < _tracks; i++) {
+      for (i = 0; i < _pattern.getTracks(); i++) {
         this.getAudioElement(i).play();
       }
     },
@@ -53,7 +68,7 @@ function Player() {
       return _checkboxes;
     },
     getCheckbox: function(beat, track) {
-      return this.getCheckboxes()[beat + track * _length];
+      return this.getCheckboxes()[beat + track * _pattern.getLength()];
     },
     playLoopOnce: async function(callback, doSleep) {
       if (doSleep === undefined) {
@@ -64,8 +79,8 @@ function Player() {
         callback = function(a, b, c) {};
       }
       var i, j;
-      for (i = 0; i < _length; i++) {
-        for (j = 0; j < _tracks; j++) {
+      for (i = 0; i < _pattern.getLength(); i++) {
+        for (j = 0; j < _pattern.getTracks(); j++) {
           if (this.getCheckbox(i, j).checked) {
             callback(i, j, true);
           } else {
@@ -79,7 +94,7 @@ function Player() {
     },
     getAudioElementByTrackNumber: function(track) {
       var i;
-      for (i = 0; i < _tracks; i++) {
+      for (i = 0; i < _pattern.getTracks(); i++) {
         var elem = this.getAudioElement(i);
         if (elem.dataset.tracknumber === track) {
           return elem;
@@ -87,11 +102,8 @@ function Player() {
       }
       throw 'AudioElementForTrackNotFoundException';
     },
-    getLength: function() {
-      return _length;
-    },
-    getTracks: function() {
-      return _tracks;
+    getPattern: function() {
+      return _pattern;
     }
   }
 };

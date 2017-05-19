@@ -4,12 +4,12 @@
   <meta charset="utf-8">
   <title>Jasmine Spec Runner v2.6.1</title>
 
-  <link rel="shortcut icon" type="image/png" href="../../Jasmine/lib/jasmine-2.6.1/jasmine_favicon.png">
-  <link rel="stylesheet" href="../../Jasmine/lib/jasmine-2.6.1/jasmine.css">
+  <link rel="shortcut icon" type="image/png" href="lib/jasmine-2.6.1/jasmine_favicon.png">
+  <link rel="stylesheet" href="lib/jasmine-2.6.1/jasmine.css">
 
-  <script src="../../Jasmine/lib/jasmine-2.6.1/jasmine.js"></script>
-  <script src="../../Jasmine/lib/jasmine-2.6.1/jasmine-html.js"></script>
-  <script src="../../Jasmine/lib/jasmine-2.6.1/boot.js"></script>
+  <script src="lib/jasmine-2.6.1/jasmine.js"></script>
+  <script src="lib/jasmine-2.6.1/jasmine-html.js"></script>
+  <script src="lib/jasmine-2.6.1/boot.js"></script>
 
 
 </head>
@@ -18,7 +18,6 @@
 <div style="display: none;">
         
     <h1> Welcome to KBD! </h1>
-
      
 
 <form action="/" method="GET" >
@@ -28,141 +27,133 @@
 
 
 
-    <div class="singleTrack" id='trackdiv-0'>
+<div class="singleTrack" id='trackdiv-0'>
+
     
-        
 
 
 
 
 
 <div class='pccheckboxcontainer' id='pccbc-0-0'>
-
+    
         <input type='checkbox' class='pccheckbox' id='boxes_0_0'
                data-beat='0' data-trackNumber='0'
                 checked  />
-        
+    
 </div>
 
 
     
-        
 
 
 
 
 
 <div class='pccheckboxcontainer' id='pccbc-0-1'>
-
+    
         <input type='checkbox' class='pccheckbox' id='boxes_0_1'
                data-beat='1' data-trackNumber='0'
                 />
-        
+    
 </div>
 
 
     
-        
 
 
 
 
 
 <div class='pccheckboxcontainer' id='pccbc-0-2'>
-
+    
         <input type='checkbox' class='pccheckbox' id='boxes_0_2'
                data-beat='2' data-trackNumber='0'
                 checked  />
-        
+    
 </div>
 
 
     
-        
 
 
 
 
 
 <div class='pccheckboxcontainer' id='pccbc-0-3'>
-
+    
         <input type='checkbox' class='pccheckbox' id='boxes_0_3'
                data-beat='3' data-trackNumber='0'
                 />
-        
+    
 </div>
 
 
-    
-    </div>
+</div>
 
-    <div class="singleTrack" id='trackdiv-1'>
+<div class="singleTrack" id='trackdiv-1'>
+
     
-        
 
 
 
 
 
 <div class='pccheckboxcontainer' id='pccbc-1-0'>
-
+    
         <input type='checkbox' class='pccheckbox' id='boxes_1_0'
                data-beat='0' data-trackNumber='1'
                 />
-        
+    
 </div>
 
 
     
-        
 
 
 
 
 
 <div class='pccheckboxcontainer' id='pccbc-1-1'>
-
+    
         <input type='checkbox' class='pccheckbox' id='boxes_1_1'
                data-beat='1' data-trackNumber='1'
                 checked  />
-        
+    
 </div>
 
 
     
-        
 
 
 
 
 
 <div class='pccheckboxcontainer' id='pccbc-1-2'>
-
+    
         <input type='checkbox' class='pccheckbox' id='boxes_1_2'
                data-beat='2' data-trackNumber='1'
                 />
-        
+    
 </div>
 
 
     
-        
 
 
 
 
 
 <div class='pccheckboxcontainer' id='pccbc-1-3'>
-
+    
         <input type='checkbox' class='pccheckbox' id='boxes_1_3'
                data-beat='3' data-trackNumber='1'
                 checked  />
-        
+    
 </div>
 
 
-    
-    </div>
+</div>
 
 
         
@@ -183,36 +174,32 @@
 
 
 
-
  <div id="length">4</div>
-
 
 
     
 </form>
 
-
     
 
-
-    <p>0, Windows Ding.wav</p>
-    <audio controls id='Windows Ding.wav' data-trackNumber='0'>
-        <source src='/assets/sounds/Windows Ding.wav' />
-        Your browser does not support the audio tag.
-    </audio>
-
-    <p>1, Windows Error.wav</p>
-    <audio controls id='Windows Error.wav' data-trackNumber='1'>
-        <source src='/assets/sounds/Windows Error.wav' />
-        Your browser does not support the audio tag.
-    </audio>
-
-
+<p>0, Windows Ding.wav</p>
+<audio controls id='Windows Ding.wav' data-trackNumber='0'>
+    <source src='/assets/sounds/Windows Ding.wav' />
+    Your browser does not support the audio tag.
+</audio> 
+<p>1, Windows Error.wav</p>
+<audio controls id='Windows Error.wav' data-trackNumber='1'>
+    <source src='/assets/sounds/Windows Error.wav' />
+    Your browser does not support the audio tag.
+</audio> 
 </div>
   <!-- include source files here... -->
-  <script src="../../public/javascripts/Player.js"></script>
+  <script src="../public/javascripts/Utilities.js"></script>
+  <script src="../public/javascripts/Pattern.js"></script>
+  <script src="../public/javascripts/Player.js"></script>
 
   <!-- include spec files here... -->
-  <script src="../javascript/PlayerSpec.js"></script>
+  <script src="../test/javascript/PlayerSpec.js"></script>
+  <script src="../test/javascript/PatternSpec.js"></script>
 </body>
 </html>

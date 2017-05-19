@@ -3,14 +3,6 @@ describe("A Player", function() {
   var player;
   var keyPress;
 
-  function makeArray(d1, d2) {
-    var arr = [];
-    for (i = 0; i < d1; i++) {
-      arr.push(new Array(d2));
-    }
-    return arr;
-  }
-
   beforeAll(function() {
     document.addEventListener('keydown', function(e) {
       player.onKeyDown(e)
@@ -64,7 +56,7 @@ describe("A Player", function() {
 
   it("should be able to return a list of audio elements on the page", function() {
     expect(player.getAudioElements()).toEqual(document.getElementsByTagName("audio"));
-    expect(player.getAudioElements().length).toBe(parseInt(player.getTracks()));
+    expect(player.getAudioElements().length).toBe(parseInt(player.getPattern().getTracks()));
   });
 
   it("should be able to return the nth audio element on the page", function() {
@@ -83,8 +75,8 @@ describe("A Player", function() {
     }
   });
 
-  it("should have a length and number of tracks matching the available checkboxes", function() {
-    expect(player.getCheckboxes().length).toBe(player.getLength() * player.getTracks());
+  it("should have a pattern with length and number of tracks matching the available checkboxes", function() {
+    expect(player.getCheckboxes().length).toBe(player.getPattern().getLength() * player.getPattern().getTracks());
   });
 
   // Broken with Scala-generated tests
@@ -106,16 +98,20 @@ describe("A Player", function() {
   });
 
   it("should call callback only on checked boxes when playing loop once", function() {
-    var checks = makeArray(player.getLength(), player.getTracks());
+    var checks = Utilities.makeArray(player.getPattern().getLength(), player.getPattern().getTracks());
     var boxes = document.getElementsByClassName("pccheckbox");
     player.playLoopOnce(function(beat, track, toSet) {
       checks[beat][track] = toSet;
     }, false);
     var i, j;
-    for (i = 0; i < player.getLength(); i++) {
-      for (j = 0; j < player.getTracks(); j++) {
+    for (i = 0; i < player.getPattern().getLength(); i++) {
+      for (j = 0; j < player.getPattern().getTracks(); j++) {
         expect(player.getCheckbox(i, j).checked).toBe(checks[i][j])
       }
     }
+  });
+
+  it("should have a pattern", function() {
+    expect(player.getPattern()).toBeDefined();
   });
 });
