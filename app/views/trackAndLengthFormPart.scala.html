@@ -1,0 +1,8 @@
+@import nl.sogyo.kbd.forms._
+
+@(patternForm: Form[PatternForm])(implicit messages: Messages)
+
+@implicitField = @{ helper.FieldConstructor(trackAndLengthFieldConstructor.f) }
+
+@helper.input(patternForm("tracks")){(id, name, value, args) => <div id='tracks'>@value</div>}
+@helper.input(patternForm("length")){(id, name, value, args) => <div id="length">@value</div>}

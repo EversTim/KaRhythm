@@ -52,9 +52,9 @@ function Player() {
         this.getAudioElement(i).play();
       }
     },
-    setLengthAndTracksAndFindCheckboxes: function(length, tracks) {
-      _length = length;
-      _tracks = tracks;
+    setLengthAndTracksAndFindCheckboxes: function() {
+      _length = document.getElementById("length").innerHTML;
+      _tracks = document.getElementById("tracks").innerHTML;
       var boxes = document.getElementsByClassName("pccheckbox");
       if (boxes.length != _length * _tracks) {
         throw 'LengthTrackBoxCountMismatch';
@@ -76,7 +76,7 @@ function Player() {
       }
       if (callback === undefined) {
         //callback = this.play
-        callback = function(a, b, c){};
+        callback = function(a, b, c) {};
       }
       var i, j;
       for (i = 0; i < _length; i++) {
@@ -101,6 +101,12 @@ function Player() {
         }
       }
       throw 'AudioElementForTrackNotFoundException';
+    },
+    getLength: function() {
+      return _length;
+    },
+    getTracks: function() {
+      return _tracks;
     }
   }
 };

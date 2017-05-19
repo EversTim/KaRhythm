@@ -1,24 +1,15 @@
-@import nl.sogyo.kbd._
+@import nl.sogyo.kbd.forms._
 
-@(map: Map[Int, String])(patternForm: Form[Pattern])(implicit messages: Messages)
+@(map: Map[Int, String])(patternForm: Form[PatternForm])(implicit messages: Messages)
 
-@implicitField = @{ helper.FieldConstructor(checkboxFieldConstructor.f) }
+@implicitField = @{ helper.FieldConstructor(trackAndLengthFieldConstructor.f) }
 
 @main("Welcome to KBD") {
     <h1> Welcome to KBD! </h1>
 
     @helper.form(routes.HomeController.index) {
-        @helper.repeatWithIndex(patternForm("boxes")) { (s, trackNumber) =>
-            <div class="singleTrack" id='trackdiv-@trackNumber'>
-            @helper.repeatWithIndex(s) { (c, beat) =>
-                @helper.input(c){ (id, name, isChecked, args) =>
-                <input type='checkbox' class='pccheckbox' id='@id'
-                       data-beat='@beat' data-trackNumber='@trackNumber'
-                       @if(isChecked.get == "true") { checked } else {} />
-                }
-            }
-            </div>
-        }
+        @checkboxFormPart(patternForm)
+        @trackAndLengthFormPart(patternForm)
     }
 
     @insertAudio(map)
