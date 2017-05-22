@@ -6,12 +6,13 @@
 
 @helper.repeatWithIndex(patternForm("boxes")) { (s, trackNumber) =>
 <div class="singleTrack" id='trackdiv-@trackNumber'>
-@helper.repeatWithIndex(s) { (c, beat) =>
+    @helper.repeatWithIndex(s) { (c, beat) =>
     @helper.input(c){ (id, name, isChecked, args) =>
+    <label class='pccheckboxlabel'>
         <input type='checkbox' class='pccheckbox' id='@id'
                data-beat='@beat' data-tracknumber='@trackNumber'
-               @if(isChecked.get == "true") { checked } else {} />
+               @if(isChecked.get== "true") { checked } else {} /></label>
     }
-}
+    }
 </div>
 }

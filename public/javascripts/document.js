@@ -8,4 +8,5 @@ window.onload = function() {
   });
 
   player.toggleMute();
+  player.startPlaying();
 }
