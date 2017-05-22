@@ -5,7 +5,7 @@ describe("A Player", function() {
 
   beforeAll(function() {
     document.addEventListener('keydown', function(e) {
-      player.onKeyDown(e)
+      player.onKeyDown(e, true)
     });
 
     keyPress = function(key) {
@@ -29,7 +29,7 @@ describe("A Player", function() {
   });
 
   it("should be able to start playing", function() {
-    player.startPlaying();
+    player.startPlaying(true);
     expect(player.isPlaying()).toBe(true);
   });
 
@@ -38,7 +38,7 @@ describe("A Player", function() {
   });
 
   it("should be able to stop playing", function() {
-    player.startPlaying();
+    player.startPlaying(true);
     player.stopPlaying();
     expect(player.isPlaying()).toBe(false);
   });
@@ -75,43 +75,40 @@ describe("A Player", function() {
     }
   });
 
+  it("should have audio elements for at least all tracks from 0 to number-1", function() {
+    expect(player.getNumberOfAudioElements() >= player.getPattern().getTracks()).toBe(true);
+    var i;
+    for (i = 0; i < player.getPattern().getTracks(); i++) {
+      expect(player.getAudioElementByTrackNumber(i)).toBeDefined();
+    }
+  })
+
   it("should have a pattern with length and number of tracks matching the available checkboxes", function() {
     expect(player.getCheckboxes().length).toBe(player.getPattern().getLength() * player.getPattern().getTracks());
   });
 
-  // Broken with Scala-generated tests
-
-  /*it("should be able to retrieve a checkbox based on beat and track", function() {
-    var boxes = player.getCheckboxes();
-    var i, j;
-    for (i = 0; i < player.getLength(); i++) {
-      for (j = 0; j < player.getTracks(); j++) {
-        expect(player.getCheckbox(i, j).checked).toBe(
-          ((i + j) % 2 == 0) ? true : false)
-      }
-    }
-  });*/
-
   it("should be able to retrieve an audio element by tracknumber", function() {
-    var elem = player.getAudioElementByTrackNumber("0");
+    var elem = player.getAudioElementByTrackNumber(0);
     expect(elem.dataset.tracknumber).toBe("0");
-  });
-
-  it("should call callback only on checked boxes when playing loop once", function() {
-    var checks = Utilities.makeArray(player.getPattern().getLength(), player.getPattern().getTracks());
-    var boxes = document.getElementsByClassName("pccheckbox");
-    player.playLoopOnce(function(beat, track, toSet) {
-      checks[beat][track] = toSet;
-    }, false);
-    var i, j;
-    for (i = 0; i < player.getPattern().getLength(); i++) {
-      for (j = 0; j < player.getPattern().getTracks(); j++) {
-        expect(player.getCheckbox(i, j).checked).toBe(checks[i][j])
-      }
-    }
   });
 
   it("should have a pattern", function() {
     expect(player.getPattern()).toBeDefined();
   });
+
+  it("should be unmuted by default", function() {
+    expect(player.isMuted()).toBe(false);
+  });
+
+  it("should mute if not muted and unmute if muted", function() {
+    player.toggleMute();
+    expect(player.isMuted()).toBe(true);
+    player.toggleMute();
+    expect(player.isMuted()).toBe(false);
+  });
+
+  it("should toggle mute on keypress m", function() {
+    keyPress("m");
+    expect(player.isMuted()).toBe(true);
+  })
 });

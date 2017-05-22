@@ -9,7 +9,7 @@
 @helper.repeatWithIndex(s) { (c, beat) =>
     @helper.input(c){ (id, name, isChecked, args) =>
         <input type='checkbox' class='pccheckbox' id='@id'
-               data-beat='@beat' data-trackNumber='@trackNumber'
+               data-beat='@beat' data-tracknumber='@trackNumber'
                @if(isChecked.get == "true") { checked } else {} />
     }
 }

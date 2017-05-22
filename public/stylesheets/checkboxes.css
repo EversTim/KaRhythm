@@ -1,3 +1,21 @@
 .pccheckboxcontainer {
-    display: inline-block;
+  display: inline-block;
+  height: 75px;
+  width: 75px;
+  margin: 2px;
+}
+
+.pccheckbox {
+  position: relative;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(3);
+}
+
+.active {
+  background-color: red;
+}
+
+.inactive {
+  background-color: blue;
 }
