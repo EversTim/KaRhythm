@@ -48,9 +48,34 @@ describe("A Player", function() {
     expect(player.isPlaying()).toBe(true);
   });
 
+  it("should start playing on keypress p", function() {
+    keyPress('p');
+    expect(player.isPlaying()).toBe(true);
+  });
+
   it("should stop playing on keypress Esc", function() {
     keyPress('g');
     keyPress('Escape');
+    expect(player.isPlaying()).toBe(false);
+  });
+
+  it("should toggle playing on keypress g and p", function() {
+    expect(player.isPlaying()).toBe(false);
+    keyPress('g');
+    expect(player.isPlaying()).toBe(true);
+    keyPress('g');
+    expect(player.isPlaying()).toBe(false);
+    keyPress('p');
+    expect(player.isPlaying()).toBe(true);
+    keyPress('p');
+    expect(player.isPlaying()).toBe(false);
+    keyPress('g');
+    expect(player.isPlaying()).toBe(true);
+    keyPress('p');
+    expect(player.isPlaying()).toBe(false);
+    keyPress('p');
+    expect(player.isPlaying()).toBe(true);
+    keyPress('g');
     expect(player.isPlaying()).toBe(false);
   });
 

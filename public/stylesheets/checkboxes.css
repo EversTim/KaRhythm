@@ -12,12 +12,12 @@
   transform: translate(-50%, -50%);
   background-color: red;
   padding: 50px;
+  /*background: url(/assets/images/activebox.png);
+  background-size: cover;*/
 }
 
 .active {
   background-color: grey;
-  background: url(/assets/images/activebox.png);
-  background-size: cover;
 }
 
 .inactive {

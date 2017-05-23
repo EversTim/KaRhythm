@@ -44,7 +44,7 @@ function Player() {
         for (j = 0; j < tracksToPlay.length; j++) {
           console.log("j " + j);
           console.log("tracksToPlay[j] " + tracksToPlay[j]);
-          resetAndPlay(_audioElementsByTrackNumber(tracksToPlay[j]));
+          resetAndPlay(audioElementsByTrackNumber(tracksToPlay[j]));
         }
         await sleep(500);
         removeCurrentBeatCSS(beat);
@@ -76,7 +76,7 @@ function Player() {
     }
   }
 
-  function _audioElementsByTrackNumber(track) {
+  function audioElementsByTrackNumber(track) {
     var i;
     for (i = 0; i < _pattern.getTracks(); i++) {
       var elem = _audioElements[i];
@@ -89,6 +89,13 @@ function Player() {
   }
 
   return {
+    togglePlaying: function(testBool = false) {
+      if(!_isPlaying) {
+        this.startPlaying(testBool);
+      } else {
+        this.stopPlaying();
+      }
+    },
     startPlaying: function(testBool = false) {
       if (!_isPlaying) {
         _isPlaying = true;
@@ -109,8 +116,8 @@ function Player() {
     },
     onKeyDown: function(e, testBool = false) {
       var key = e.key;
-      if (key === "g") {
-        this.startPlaying(testBool);
+      if (key === "g" || key === "p") {
+        this.togglePlaying(testBool);
       } else if (key === "Escape") {
         this.stopPlaying();
       } else if (key === "m") {
@@ -136,7 +143,7 @@ function Player() {
       return _checkboxes;
     },
     getAudioElementByTrackNumber: function(track) {
-      return _audioElementsByTrackNumber(track);
+      return audioElementsByTrackNumber(track);
     },
     getPattern: function() {
       return _pattern;
