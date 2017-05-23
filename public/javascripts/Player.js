@@ -4,6 +4,8 @@ function Player() {
   var _isPlaying = false;
   var _isMuted = false;
 
+  var _keyboardBeat = -1;
+
   var _checkboxes = document.getElementsByClassName("pccheckbox")
 
   var _pattern = new Pattern();
@@ -36,6 +38,7 @@ function Player() {
         if (!_isPlaying) {
           break;
         }
+        _keyboardBeat = beat;
         setCurrentBeatCSS(beat);
         var tracksToPlay = _pattern.play(beat);
         var j;
@@ -88,9 +91,22 @@ function Player() {
     throw 'AudioElementForTrackNotFoundException';
   }
 
+  function isNumber(key) {
+    var nb = parseInt(key);
+    if (isNaN(nb)) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  function toggleBox(track) {
+    Utilities.getCheckbox(track, _keyboardBeat).click(); // click to trigger events
+  }
+
   return {
     togglePlaying: function(testBool = false) {
-      if(!_isPlaying) {
+      if (!_isPlaying) {
         this.startPlaying(testBool);
       } else {
         this.stopPlaying();
@@ -110,6 +126,7 @@ function Player() {
       for (i = 0; i < _audioElements.length; i++) {
         resetAudioElement(_audioElements[i]);
       }
+      _keyboardBeat = -1;
     },
     isPlaying: function() {
       return _isPlaying;
@@ -122,6 +139,11 @@ function Player() {
         this.stopPlaying();
       } else if (key === "m") {
         this.toggleMute();
+      } else if (isNumber(key)) {
+        var intkey = parseInt(key);
+        if (intkey < _pattern.getTracks()) {
+          toggleBox(parseInt(key));
+        }
       }
     },
     getAudioElements: function() {

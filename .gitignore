@@ -7,4 +7,4 @@ target
 /.settings
 /RUNNING_PID
 *.swp
-Jasmine/SpecRunner.*.html
+**/SpecRunner.*.html
