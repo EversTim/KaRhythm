@@ -1,10 +1,16 @@
 'use strict';
 
 function Player() {
-  var _isPlaying = false;
   var _isMuted = false;
 
-  var _keyboardBeat = -1;
+  var _interval = undefined;
+  var _time = undefined;
+
+  var _beat = 0;
+
+  var _keyboardBeat = undefined;
+
+  var _tempo = 120;
 
   var _checkboxes = document.getElementsByClassName("pccheckbox")
 
@@ -31,28 +37,23 @@ function Player() {
     elem.play();
   }
 
-  async function loop() {
-    while (_isPlaying) {
-      var beat;
-      for (beat = 0; beat < _pattern.getLength(); beat++) {
-        if (!_isPlaying) {
-          break;
-        }
-        _keyboardBeat = beat;
-        setCurrentBeatCSS(beat);
-        var tracksToPlay = _pattern.play(beat);
-        var j;
-        console.log("tracksToPlay " + tracksToPlay);
-        console.log("tracksToPlay.length " + tracksToPlay.length)
-        for (j = 0; j < tracksToPlay.length; j++) {
-          console.log("j " + j);
-          console.log("tracksToPlay[j] " + tracksToPlay[j]);
-          resetAndPlay(audioElementsByTrackNumber(tracksToPlay[j]));
-        }
-        await sleep(500);
-        removeCurrentBeatCSS(beat);
-      }
+  function nextBeat(beat) {
+    return (beat !== undefined) ? (beat + 1) % _pattern.getLength() : undefined;
+  }
+
+  async function singleBeat() {
+    console.log("change _beat");
+    _beat = _keyboardBeat;
+    setCurrentBeatCSS(_beat);
+    var tracksToPlay = _pattern.play(_beat);
+    var j;
+    for (j = 0; j < tracksToPlay.length; j++) {
+      resetAndPlay(audioElementsByTrackNumber(tracksToPlay[j]));
     }
+    await sleep(_time * 0.5);
+    console.log("change _keyboardBeat");
+    _keyboardBeat = nextBeat(_keyboardBeat);
+    removeCurrentBeatCSS(_beat);
   }
 
   function setCurrentBeatCSS(beat) {
@@ -100,49 +101,68 @@ function Player() {
     }
   }
 
-  function toggleBox(track) {
-    Utilities.getCheckbox(track, _keyboardBeat).click(); // click to trigger events
+  function numberKey(tracknb) {
+    console.log(_keyboardBeat);
+    if (_keyboardBeat !== undefined) {
+      Utilities.getCheckbox(tracknb, _keyboardBeat).click(); // click to trigger events
+      if (Utilities.getCheckbox(tracknb, _keyboardBeat).checked) {
+        resetAndPlay(audioElementsByTrackNumber(tracknb));
+      }
+    } else {
+      resetAndPlay(audioElementsByTrackNumber(tracknb));
+    }
   }
 
   return {
     togglePlaying: function(testBool = false) {
-      if (!_isPlaying) {
+      if (!this.isPlaying()) {
         this.startPlaying(testBool);
       } else {
         this.stopPlaying();
       }
     },
     startPlaying: function(testBool = false) {
-      if (!_isPlaying) {
-        _isPlaying = true;
+      if (!this.isPlaying()) {
+        _time = 60000 / _tempo;
         if (!testBool) {
-          loop();
+          _keyboardBeat = 0;
+          singleBeat();
+          _interval = setInterval(singleBeat, _time);
+        } else {
+          _interval = "dummy";
         }
       }
     },
-    stopPlaying: function() {
-      _isPlaying = false;
+    stopPlaying: function(testBool = false) {
       var i;
       for (i = 0; i < _audioElements.length; i++) {
         resetAudioElement(_audioElements[i]);
       }
-      _keyboardBeat = -1;
+      _keyboardBeat = undefined;
+      if (!testBool) {
+        if (_interval !== undefined) {
+          clearInterval(_interval);
+        }
+      }
+      _interval = undefined;
+      _time = undefined;
+      _beat = undefined;
     },
     isPlaying: function() {
-      return _isPlaying;
+      return (_interval !== undefined);
     },
     onKeyDown: function(e, testBool = false) {
       var key = e.key;
       if (key === "g" || key === "p") {
         this.togglePlaying(testBool);
       } else if (key === "Escape") {
-        this.stopPlaying();
+        this.stopPlaying(testBool);
       } else if (key === "m") {
         this.toggleMute();
       } else if (isNumber(key)) {
-        var intkey = parseInt(key);
-        if (intkey < _pattern.getTracks()) {
-          toggleBox(parseInt(key));
+        var tracknb = parseInt(key) - 1;
+        if (tracknb < _pattern.getTracks()) {
+          numberKey(tracknb);
         }
       }
     },

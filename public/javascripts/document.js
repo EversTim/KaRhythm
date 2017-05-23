@@ -7,6 +7,6 @@ window.onload = function() {
     player.onKeyDown(e);
   });
 
-  player.toggleMute();
+  //player.toggleMute();
   player.startPlaying();
 }
