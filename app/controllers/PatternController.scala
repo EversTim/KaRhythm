@@ -1,17 +1,18 @@
 package controllers
 
+import javax.inject.Inject
+
 import play.api.mvc._
 import play.api.data._
 import play.api.data.Forms._
 import play.api.Play.current
 import play.api.i18n.Messages.Implicits._
-
 import nl.sogyo.kbd._
 import nl.sogyo.kbd.forms._
 
-import scala.util.{Success, Failure}
+import scala.util.{Failure, Success}
 
-trait PatternController extends Controller {
+abstract class PatternController @Inject()(pc: PatternCollection) extends Controller {
 
   val patternForm = Form(
     mapping(
@@ -22,7 +23,7 @@ trait PatternController extends Controller {
   )
 
   def fromID(patternID: Int): Action[AnyContent] =
-    PatternList(patternID) match {
+    pc.get(patternID) match {
       case Some(p) => createAction(p)
       case None => Action(NotFound("ID " + patternID + " not found."))
     }
