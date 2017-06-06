@@ -4,7 +4,6 @@ import javax.inject._
 
 import play.api.mvc._
 import nl.sogyo.kbd._
-import play.api.db._
 
 @Singleton
 class HomeController @Inject()(pc: PatternCollection) extends PatternController(pc) {
@@ -19,7 +18,7 @@ class HomeController @Inject()(pc: PatternCollection) extends PatternController(
         BadRequest(formWithErrors.toString)
       },
       pf => {
-        val p = Pattern(pf.data, pf.length, pf.tracks)
+        val p = Pattern(pf.data.map(ss => Track(ss:_*)))
         val id = pc.post(p)
         Redirect(routes.HomeController.fromID(id))
       }

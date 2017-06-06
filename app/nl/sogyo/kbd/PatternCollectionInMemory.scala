@@ -11,9 +11,9 @@ class PatternCollectionInMemory extends PatternCollection {
 
   // Default patterns
   IndexedSeq(
-    Pattern(Vector(Vector(true, false, true, false), Vector(false, true, false, true))),
-    Pattern(Vector(Vector(true, false, true, false), Vector(false, true, false, true), Vector(true, true, true, true))),
-    Pattern(Vector(Vector(true, false, true, false, true), Vector(false, true, false, true, false), Vector(true, true, true, true, false)))
+    Pattern(Vector(Track(true, false, true, false), Track(false, true, false, true))),
+    Pattern(Vector(Track(true, false, true, false), Track(false, true, false, true), Track(true, true, true, true))),
+    Pattern(Vector(Track(true, false, true, false, true), Track(false, true, false, true, false), Track(true, true, true, true, false)))
   ).foreach(this.post)
 
   def get(id: Int): Option[Pattern] = patterns.get(id)

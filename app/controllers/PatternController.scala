@@ -29,7 +29,7 @@ abstract class PatternController @Inject()(pc: PatternCollection) extends Contro
     }
 
   def createAction(p: Pattern): Action[AnyContent] = Action {
-    val filledForm = patternForm.fill(PatternForm(p.data, p.length, p.tracks))
+    val filledForm = patternForm.fill(PatternForm(p.data.map(_.data), p.length, p.tracks))
 
     val testMap = SoundMap(p.tracks)
     testMap match {
