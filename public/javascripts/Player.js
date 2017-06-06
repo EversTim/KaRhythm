@@ -42,7 +42,6 @@ function Player() {
   }
 
   async function singleBeat() {
-    console.log("change _beat");
     _beat = _keyboardBeat;
     setCurrentBeatCSS(_beat);
     var tracksToPlay = _pattern.play(_beat);
@@ -51,7 +50,6 @@ function Player() {
       resetAndPlay(audioElementsByTrackNumber(tracksToPlay[j]));
     }
     await sleep(_time * 0.5);
-    console.log("change _keyboardBeat");
     _keyboardBeat = nextBeat(_keyboardBeat);
     removeCurrentBeatCSS(_beat);
   }
@@ -145,8 +143,6 @@ function Player() {
         }
       }
       _interval = undefined;
-      _time = undefined;
-      _beat = undefined;
     },
     isPlaying: function() {
       return (_interval !== undefined);

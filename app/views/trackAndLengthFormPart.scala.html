@@ -4,5 +4,6 @@
 
 @implicitField = @{ helper.FieldConstructor(trackAndLengthFieldConstructor.f) }
 
-@helper.input(patternForm("tracks")){(id, name, value, args) => <div id='tracks'>@value</div>}
-@helper.input(patternForm("length")){(id, name, value, args) => <div id="length">@value</div>}
+@helper.input(patternForm("tracks")){(id, name, value, args) => Tracks: <input id='tracks' name='tracks' value='@value'/>}
+<br />
+@helper.input(patternForm("length")){(id, name, value, args) => Length: <input id='length' name='length' value='@value'/>}

@@ -9,7 +9,7 @@ import play.api.i18n.Messages.Implicits._
 import play.api.Logger
 
 import nl.sogyo.kbd._
-import nl.sogyo.kbd.forms.PatternForm
+import nl.sogyo.kbd.forms._
 
 import scala.util.{Try, Success, Failure}
 
@@ -20,13 +20,14 @@ import scala.util.{Try, Success, Failure}
 @Singleton
 class HomeController @Inject() extends Controller {
 
-  /**
-    * Create an Action to render an HTML page.
-    *
-    * The configuration in the `routes` file means that this method
-    * will be called when the application receives a `GET` request with
-    * a path of `/`.
-    */
+  val patternForm = Form(
+    mapping(
+      "boxes" -> seq(seq(boolean)),
+      "length" -> number.verifying(_ > 0),
+      "tracks" -> number.verifying(_ > 0)
+    )(PatternForm.apply)(PatternForm.unapply)
+  )
+
   def index: Action[AnyContent] = {
     createAction(Pattern.defaultPattern)
   }
@@ -37,14 +38,7 @@ class HomeController @Inject() extends Controller {
   }
 
   def createAction(p: Pattern): Action[AnyContent] = {
-    val form = Form(
-      mapping(
-        "boxes" -> seq(seq(boolean)),
-        "length" -> number,
-        "tracks" -> number
-      )(PatternForm.apply)(PatternForm.unapply)
-    )
-    val filledForm = form.fill(PatternForm(p.data, p.length, p.tracks))
+    val filledForm = patternForm.fill(PatternForm(p.data, p.length, p.tracks))
 
     val testMap = SoundMap(p.tracks)
     Action { implicit request =>
@@ -53,6 +47,19 @@ class HomeController @Inject() extends Controller {
         case Failure(e) => BadRequest("Bad request: " + e)
       }
     }
+  }
 
+  def withPattern(p: Pattern): Action[AnyContent] = createAction(p)
+
+  def postPattern: Action[AnyContent] = Action { implicit request =>
+    patternForm.bindFromRequest.fold(
+      formWithErrors => {
+        BadRequest(formWithErrors.toString)
+      },
+      pf => {
+        val p = Pattern(pf.data, pf.length, pf.tracks)
+        Ok("Form received: " + p.toString)
+      }
+    )
   }
 }
