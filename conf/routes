@@ -5,7 +5,9 @@
 
 GET     /                           controllers.HomeController.index
 
-GET     /test/:id                   controllers.HomeController.test(id: Int)
+GET     /:id                        controllers.HomeController.fromID(id: Int)
+
+GET     /test/:id                   controllers.TestController.test(id: Int)
 
 POST    /postPattern                controllers.HomeController.postPattern
 

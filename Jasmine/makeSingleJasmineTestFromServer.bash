@@ -15,14 +15,16 @@ function cleanup {
 
 trap cleanup EXIT
 
-curl -I http://localhost:9000/test/$testNumber > $scratch/headers.html
+baseURL="http://localhost:9000/test/"
+
+curl -I $baseURL$testNumber > $scratch/headers.html
 
 if ! grep "HTTP/[0-9]\.[0-9] 200" $scratch/headers.html &> /dev/null
 	then
 		exit 1
 fi
 
-curl http://localhost:9000/test/$testNumber > $scratch/testFile.html
+curl $baseURL$testNumber > $scratch/testFile.html
 
 bodyTagLineNumber=$(grep -n -m 1 \<body\> $scratch/testFile.html | cut -f 1 -d ":")
 firstScriptTagLineNumber=$(grep -n -m 1 \<script $scratch/testFile.html | cut -f 1 -d ":")
