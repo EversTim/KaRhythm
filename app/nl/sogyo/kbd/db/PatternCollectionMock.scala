@@ -6,8 +6,7 @@ import nl.sogyo.kbd.domain.{Pattern, Sound, Track}
 
 import scala.collection._
 import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.duration._
-import scala.concurrent.{Await, Future}
+import scala.concurrent.Future
 
 @Singleton
 class PatternCollectionMock @Inject() extends PatternCollection {

@@ -7,7 +7,6 @@ import nl.sogyo.kbd.db.{PatternCollection, SoundCollection}
 import nl.sogyo.kbd.domain.{Pattern, Track}
 
 import scala.concurrent._
-import scala.concurrent.duration._
 import scala.concurrent.ExecutionContext.Implicits.global
 
 @Singleton
@@ -22,11 +21,14 @@ class HomeController @Inject()(pc: PatternCollection, sc: SoundCollection) exten
       formWithErrors => {
         Future(BadRequest(formWithErrors.toString))
       },
-      pf => {
-        val p = Pattern(pf.name, pf.data.zip(pf.trackNames).zip(pf.trackSounds).map {
-          case ((d, n), s) => Track(n, Await.result(sc.get(s), 100.millis).get, d: _*)
-        }:_*)
-        val fid = pc.post(p)
+      pForm => {
+        val pattern: Future[Pattern] = {
+          val tracks: Future[Seq[Track]] = Future.sequence(for {
+            ((d, n), s) <- pForm.data.zip(pForm.trackNames).zip(pForm.trackSounds)
+          } yield sc.get(s).map(so => Track(n, so.get, d: _*)))
+          tracks.map(ts => Pattern(pForm.name, ts: _*))
+        }
+        val fid = pattern.flatMap(pc.post)
         fid.map(id => Redirect(routes.HomeController.from(id)))
       }
     )

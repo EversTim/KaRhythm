@@ -3,6 +3,7 @@ package nl.sogyo.kbd.db
 import nl.sogyo.kbd.domain.Pattern
 
 import scala.concurrent._
+import scala.concurrent.ExecutionContext.Implicits.global
 
 trait PatternCollection {
   def numberOfTestPatterns = 3
