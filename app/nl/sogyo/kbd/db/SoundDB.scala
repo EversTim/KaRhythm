@@ -12,8 +12,9 @@ class SoundDB @Inject()(db: Database) extends SoundCollection {
   def get(id: Int): Future[Option[Sound]] = Future {
     db.withConnection { conn =>
 
-      val stmt = conn.createStatement
-      val rs = stmt.executeQuery(s"SELECT name, file_location FROM sounds WHERE sound_id=$id;")
+      val stmt = conn.prepareStatement("SELECT name, file_location FROM sounds WHERE sound_id = ?;")
+      stmt.setInt(1, id)
+      val rs = stmt.executeQuery
 
       var soundName: String = null
       var soundLocation: String = null
@@ -31,8 +32,9 @@ class SoundDB @Inject()(db: Database) extends SoundCollection {
   def get(name: String): Future[Option[Sound]] = Future {
     db.withConnection { conn =>
 
-      val stmt = conn.createStatement
-      val rs = stmt.executeQuery(s"SELECT name, file_location FROM sounds WHERE name='$name;'")
+      val stmt = conn.prepareStatement("SELECT name, file_location FROM sounds WHERE name = ?;")
+      stmt.setString(1, name)
+      val rs = stmt.executeQuery
 
       var soundName: String = null
       var soundLocation: String = null

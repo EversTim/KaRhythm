@@ -24,8 +24,8 @@ class HomeController @Inject()(pc: PatternCollection, sc: SoundCollection) exten
       pForm => {
         val pattern: Future[Pattern] = {
           val tracks: Future[Seq[Track]] = Future.sequence(for {
-            ((d, n), s) <- pForm.data.zip(pForm.trackNames).zip(pForm.trackSounds)
-          } yield sc.get(s).map(so => Track(n, so.get, d: _*)))
+            ((data, name), soundName) <- pForm.data.zip(pForm.trackNames).zip(pForm.trackSounds)
+          } yield sc.get(soundName).map(soundOption => Track(name, soundOption.get, data: _*)))
           tracks.map(ts => Pattern(pForm.name, ts: _*))
         }
         val fid = pattern.flatMap(pc.post)

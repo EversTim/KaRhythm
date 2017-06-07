@@ -1,5 +1,6 @@
 package nl.sogyo.kbd.db
 
+import java.sql.PreparedStatement
 import javax.inject._
 
 import nl.sogyo.kbd.domain._
@@ -18,8 +19,9 @@ class PatternDB @Inject()(db: Database) extends PatternCollection {
   def get(id: Int): Future[Option[Pattern]] = Future {
     db.withConnection { conn =>
 
-      val stmt = conn.createStatement
-      val rs = stmt.executeQuery(s"SELECT p.name AS pname, t.name AS tname, t.data, s.name AS sname, s.file_location FROM patterns AS p JOIN tracks AS t ON p.pattern_id = t.pattern_id JOIN sounds AS s ON t.sound_id = s.sound_id WHERE p.pattern_id = $id;")
+      val stmt = conn.prepareStatement("SELECT p.name AS pname, t.name AS tname, t.data, s.name AS sname, s.file_location FROM patterns AS p JOIN tracks AS t ON p.pattern_id = t.pattern_id JOIN sounds AS s ON t.sound_id = s.sound_id WHERE p.pattern_id = ?;")
+      stmt.setInt(1, id)
+      val rs = stmt.executeQuery
 
       val tracks = mutable.Buffer[Track]()
       var patternName: String = null
@@ -38,7 +40,13 @@ class PatternDB @Inject()(db: Database) extends PatternCollection {
     }
   }
 
-  def post(p: Pattern): Future[Int] = ???
+  def post(p: Pattern): Future[Int] = Future {
+    db.withConnection{ conn =>
+      val stmt = conn.createStatement
+      stmt.executeUpdate(s"INSERT INTO ")
+      ???
+    }
+  }
 }
 
 object PatternDB {
