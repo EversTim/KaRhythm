@@ -5,6 +5,9 @@ import javax.inject._
 import play.api.mvc._
 import nl.sogyo.kbd._
 
+import scala.concurrent.Future
+import scala.concurrent.ExecutionContext.Implicits.global
+
 @Singleton
 class HomeController @Inject()(pc: PatternCollection) extends PatternController(pc) {
 
@@ -12,15 +15,15 @@ class HomeController @Inject()(pc: PatternCollection) extends PatternController(
     fromID(0)
   }
 
-  def postPattern: Action[AnyContent] = Action { implicit request =>
+  def postPattern: Action[AnyContent] = Action.async { implicit request =>
     patternForm.bindFromRequest.fold(
       formWithErrors => {
-        BadRequest(formWithErrors.toString)
+        Future(BadRequest(formWithErrors.toString))
       },
       pf => {
-        val p = Pattern(pf.data.map(ss => Track(ss:_*)))
-        val id = pc.post(p)
-        Redirect(routes.HomeController.fromID(id))
+        val p = Pattern(pf.data.map(ss => Track(ss:_*)):_*)
+        val fid = pc.post(p)
+        fid.map(id => Redirect(routes.HomeController.fromID(id)))
       }
     )
   }

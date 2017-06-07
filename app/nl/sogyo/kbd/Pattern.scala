@@ -1,6 +1,6 @@
 package nl.sogyo.kbd
 
-case class Pattern(data: Seq[Track]) {
+case class Pattern(data: Track*) {
 
   val length: Int = data.foldLeft(Int.MinValue)((acc, s) => acc.max(s.length))
 

@@ -8,9 +8,15 @@ lazy val root = (project in file(".")).enablePlugins(PlayScala)
 scalaVersion := "2.11.11"
 
 libraryDependencies += filters
-libraryDependencies += jdbc
+//libraryDependencies += jdbc
+libraryDependencies += "com.typesafe" % "config" % "1.3.1"
 libraryDependencies += "org.postgresql" % "postgresql" % "42.1.1.jre7"
-//libraryDependencies += "com.typesafe.play" %% "play-slick" % "2.0.0"
+libraryDependencies += "com.typesafe.play" %% "play-slick" % "2.0.0"
+//libraryDependencies += evolutions
+libraryDependencies ++= Seq(
+  "com.typesafe.play" %% "play-slick" % "2.0.0",
+  "com.typesafe.play" %% "play-slick-evolutions" % "2.0.0"
+)
 libraryDependencies += "org.scalatestplus.play" %% "scalatestplus-play" % "2.0.0" % Test
 
 // Adds additional packages into Twirl

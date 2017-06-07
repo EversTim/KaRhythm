@@ -5,6 +5,7 @@ import org.scalatestplus.play.guice.GuiceOneAppPerTest
 import play.api.test._
 import play.api.test.Helpers._
 
+import nl.sogyo.kbd.PatternCollectionMock
 /**
  * Add your spec here.
  * You can mock out a whole application including requests, plugins etc.
@@ -16,7 +17,7 @@ class HomeControllerSpec extends PlaySpec with GuiceOneAppPerTest  {
   "HomeController GET" should {
 
     "render the index page from a new instance of controller" in {
-      val controller = new HomeController
+      val controller = new HomeController(new PatternCollectionMock)
       val home = controller.index().apply(FakeRequest())
 
       status(home) mustBe OK
@@ -42,7 +43,7 @@ class HomeControllerSpec extends PlaySpec with GuiceOneAppPerTest  {
 
 
     "render 8 checkboxes by default" in {
-      val controller = new HomeController
+      val controller = new HomeController(new PatternCollectionMock)
       val home = controller.index().apply(FakeRequest())
       val content = contentAsString(home)
 
@@ -55,7 +56,7 @@ class HomeControllerSpec extends PlaySpec with GuiceOneAppPerTest  {
     }
 
     "have 4 of the default checkboxes checked" in {
-      val controller = new HomeController
+      val controller = new HomeController(new PatternCollectionMock)
       val home = controller.index().apply(FakeRequest())
       val content = contentAsString(home)
 
