@@ -1,11 +1,11 @@
 package controllers
 
+import nl.sogyo.kbd.db.PatternCollectionMock
 import org.scalatestplus.play._
 import org.scalatestplus.play.guice.GuiceOneAppPerTest
 import play.api.test._
 import play.api.test.Helpers._
 
-import nl.sogyo.kbd.PatternCollectionMock
 /**
  * Add your spec here.
  * You can mock out a whole application including requests, plugins etc.

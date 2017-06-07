@@ -1,4 +1,4 @@
-package nl.sogyo.kbd
+package nl.sogyo.kbd.domain
 
 case class Track(name: String, sound: Sound, data: Boolean*) {
 

@@ -13,11 +13,13 @@ libraryDependencies += "com.typesafe" % "config" % "1.3.1"
 libraryDependencies += "org.postgresql" % "postgresql" % "42.1.1.jre7"
 libraryDependencies += "com.typesafe.play" %% "play-slick" % "2.0.0"
 //libraryDependencies += evolutions
-/*libraryDependencies ++= Seq(
+libraryDependencies ++= Seq(
   "com.typesafe.play" %% "play-slick" % "2.0.0",
   "com.typesafe.play" %% "play-slick-evolutions" % "2.0.0"
-)*/
+)
 libraryDependencies += "org.scalatestplus.play" %% "scalatestplus-play" % "2.0.0" % Test
+
+libraryDependencies += "com.typesafe.slick" %% "slick-codegen" % "3.2.0"
 
 // Adds additional packages into Twirl
 //TwirlKeys.templateImports += "nl.sogyo.controllers._"

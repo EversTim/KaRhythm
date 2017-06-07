@@ -1,18 +1,17 @@
-package nl.sogyo.kbd
+package nl.sogyo.kbd.db
 
 import javax.inject._
 
+import nl.sogyo.kbd.domain.Pattern
 import play.api.db.slick.DatabaseConfigProvider
 import slick.driver.JdbcProfile
 
 import scala.concurrent.Future
 
 @Singleton
-class PatternDB @Inject()(dbConfigProvider: DatabaseConfigProvider, val sc: SoundCollection) extends PatternCollection {
+class PatternDB @Inject()(dbConfigProvider: DatabaseConfigProvider, protected val sc: SoundCollection) extends PatternCollection {
 
   private val dbConfig = dbConfigProvider.get[JdbcProfile]
-
-  addDefaults()
 
   def get(id: Int): Future[Option[Pattern]] = ???
 

@@ -1,4 +1,4 @@
-package nl.sogyo.kbd
+package nl.sogyo.kbd.domain
 
 case class Pattern(name: String, data: Track*) {
 

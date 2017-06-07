@@ -1,20 +1,21 @@
 package nl.sogyo.kbd
 
+import nl.sogyo.kbd.domain._
 import org.scalatest._
 
 class PatternSpec extends FlatSpec with MustMatchers {
   "A pattern" should "be creatable with a Vector(Vector(0))" in {
-    val p = Pattern("", Track(false))
-    p.data mustBe Vector(Track(false))
+    val p = Pattern("", Track("", Sound.nullSound, false))
+    p.data mustBe Vector(Track("", Sound.nullSound, false))
   }
 
   it should "have a defined length" in {
-    val p = Pattern("", Track(false))
+    val p = Pattern("", Track("", Sound.nullSound, false))
     p.length mustBe 1
   }
 
   it should "have a defined number of tracks" in {
-    val p = Pattern("", Track(false))
+    val p = Pattern("", Track("", Sound.nullSound, false))
     p.tracks mustBe 1
   }
 
@@ -26,13 +27,13 @@ class PatternSpec extends FlatSpec with MustMatchers {
 
   it should "throw ZeroLengthTrackException when given 0 length tracks" in {
     a[ZeroLengthTrackException] should be thrownBy {
-      Pattern("", Track(""))
+      Pattern("", Track("", Sound.nullSound))
     }
   }
 
   it should "throw UnevenLengthException when given different length in different tracks" in {
     an[UnevenLengthException] should be thrownBy {
-      Pattern("", Track("", false), Track("", true, false))
+      Pattern("", Track("", Sound.nullSound, false), Track("", Sound.nullSound, true, false))
     }
   }
 }
