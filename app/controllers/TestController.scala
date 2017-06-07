@@ -3,7 +3,6 @@ package controllers
 import javax.inject._
 
 import play.api.mvc._
-import nl.sogyo.kbd._
 import nl.sogyo.kbd.db.PatternCollection
 
 @Singleton

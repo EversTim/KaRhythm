@@ -3,7 +3,6 @@ package controllers
 import javax.inject._
 
 import play.api.mvc._
-import nl.sogyo.kbd._
 import nl.sogyo.kbd.db.{PatternCollection, SoundCollection}
 import nl.sogyo.kbd.domain.{Pattern, Track}
 
@@ -15,7 +14,7 @@ import scala.concurrent.ExecutionContext.Implicits.global
 class HomeController @Inject()(pc: PatternCollection, sc: SoundCollection) extends PatternController(pc) {
 
   def index: Action[AnyContent] = {
-    from("Default")
+    from(1)
   }
 
   def postPattern: Action[AnyContent] = Action.async { implicit request =>

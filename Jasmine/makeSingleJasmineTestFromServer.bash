@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # If no arguments are passed, use the default
-testNumber=0
+testNumber=1
 if [ $# -eq 1 ]
 	then
 		testNumber=$1

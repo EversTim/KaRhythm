@@ -1,6 +1,5 @@
-package nl.sogyo.kbd
+package nl.sogyo.kbd.domain
 
-import nl.sogyo.kbd.domain._
 import org.scalatest._
 
 class PatternSpec extends FlatSpec with MustMatchers {
