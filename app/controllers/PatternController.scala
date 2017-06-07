@@ -10,14 +10,16 @@ import play.api.i18n.Messages.Implicits._
 import nl.sogyo.kbd._
 import nl.sogyo.kbd.forms._
 
-import scala.util.{Failure, Success}
 import scala.concurrent.ExecutionContext.Implicits.global
 
 abstract class PatternController @Inject()(pc: PatternCollection) extends Controller {
 
   val patternForm = Form(
     mapping(
+      "name" -> text,
       "boxes" -> seq(seq(boolean)),
+      "tracknames" -> seq(text),
+      "soundnames" -> seq(text),
       "length" -> number.verifying(_ > 0),
       "tracks" -> number.verifying(_ > 0)
     )(PatternForm.apply)(PatternForm.unapply)
@@ -25,18 +27,27 @@ abstract class PatternController @Inject()(pc: PatternCollection) extends Contro
 
   def fromID(patternID: Int): Action[AnyContent] = Action.async {
     pc.get(patternID).map {
-      case Some(p) => createResult(p)
+      case Some(p) =>
+        println(p)
+        createResult(p)
       case None => NotFound("ID " + patternID + " not found.")
     }
   }
 
-  def createResult(p: Pattern): Result = {
-    val filledForm = patternForm.fill(PatternForm(p.data.map(_.data), p.length, p.tracks))
-
-    val testMap = SoundMap(p.tracks)
-    testMap match {
-      case Success(m) => Ok(views.html.index(m)(filledForm))
-      case Failure(e) => BadRequest("Bad request: " + e)
+  def fromName(patternName: String): Action[AnyContent] = Action.async {
+    pc.get(patternName).map {
+      case Some(p) =>
+        println(p)
+        createResult(p)
+      case None => NotFound("ID " + patternName + " not found.")
     }
+  }
+
+  def createResult(p: Pattern): Result = {
+    val filledForm = patternForm.fill(PatternForm(p.name, p.data.map(_.data), p.data.map(_.name), p.data.map(_.sound.name), p.length, p.tracks))
+    println(PatternForm(p.name, p.data.map(_.data), p.data.map(_.name), p.data.map(_.sound.name), p.length, p.tracks))
+
+    val soundMap = p.generateSoundMap
+    Ok(views.html.index(soundMap)(filledForm))
   }
 }

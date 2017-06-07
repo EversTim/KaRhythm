@@ -1,6 +1,6 @@
 package nl.sogyo.kbd
 
-case class Pattern(data: Track*) {
+case class Pattern(name: String, data: Track*) {
 
   val length: Int = data.foldLeft(Int.MinValue)((acc, s) => acc.max(s.length))
 
@@ -11,4 +11,8 @@ case class Pattern(data: Track*) {
 
   if (data.exists(_.length != data.head.length))
     throw UnevenLengthException(data.toString)
+
+  def generateSoundMap: Map[Int, String] = data.zipWithIndex.map {
+    case (d, i) => i -> d.sound.location
+  }.toMap
 }

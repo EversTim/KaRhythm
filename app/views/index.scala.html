@@ -1,18 +1,12 @@
 @import nl.sogyo.kbd.forms._
 @(map: Map[Int, String])(patternForm: Form[PatternForm])(implicit messages: Messages)
+@implicitField = @{ helper.FieldConstructor(plainFieldConstructor.f) }
 
 @main("Welcome to KBD") {
     <h1> Welcome to KBD! </h1>
     @helper.form(routes.HomeController.postPattern, 'id -> "pattern_form") {
+        @helper.input(patternForm("name")){(id, name, value, args) => Pattern name: <input id='name' name='name' value='@value'/>}
         @checkboxFormPart(patternForm)
-
-@*@helper.repeatWithIndex(patternForm("boxes")) { (s, trackNumber) =>
-<div class="singleTrack" id='trackdiv-@trackNumber'>
-    @helper.repeatWithIndex(s) { (c, beat) =>
-        @helper.checkbox(c)
-    }
-</div>
-}*@
         @trackAndLengthFormPart(patternForm)
         <button type='submit' id='saveButton'>Save</button>
     }

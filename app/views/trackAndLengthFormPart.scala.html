@@ -2,7 +2,7 @@
 
 @(patternForm: Form[PatternForm])(implicit messages: Messages)
 
-@implicitField = @{ helper.FieldConstructor(trackAndLengthFieldConstructor.f) }
+@implicitField = @{ helper.FieldConstructor(plainFieldConstructor.f) }
 
 @helper.input(patternForm("tracks")){(id, name, value, args) => Tracks: <input id='tracks' name='tracks' value='@value'/>}
 <br />

@@ -7,13 +7,13 @@ import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
 
 @Singleton
-class PatternCollectionMock extends PatternCollection {
+class PatternCollectionMock @Inject()(val sc: SoundCollection) extends PatternCollection {
   private val patterns: mutable.Map[Int, Pattern] = mutable.Map()
   private var curID = -1
 
   addDefaults()
 
-  def get(id: Int): Future[Option[Pattern]] = Future{
+  def get(id: Int): Future[Option[Pattern]] = Future {
     patterns.get(id)
   }
 
@@ -25,5 +25,9 @@ class PatternCollectionMock extends PatternCollection {
         patterns += curID -> p
         curID
     }
+  }
+
+  def get(name: String): Future[Option[Pattern]] = Future {
+    patterns.values.find(p => p.name == name)
   }
 }
