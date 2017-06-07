@@ -40,7 +40,7 @@ class PatternCollectionMock @Inject() extends PatternCollection {
       case None =>
         curID = curID + 1
         patterns += curID -> p
-        (curID + 1)
+        curID + 1
     }
   }
 
