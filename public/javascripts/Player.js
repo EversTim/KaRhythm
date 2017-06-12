@@ -93,8 +93,6 @@ function Player() {
       if (Utilities.getCheckbox(tracknb, _keyboardBeat).checked) {
         resetAndPlay(audioElementsByTrackNumber(tracknb));
       }
-    } else {
-      resetAndPlay(audioElementsByTrackNumber(tracknb));
     }
   }
 
