@@ -7,9 +7,6 @@ window.onload = function() {
     player.onKeyDown(e);
   });
 
-  player.toggleMute();
-  //player.startPlaying();
-
   document.getElementById("pattern_form").onsubmit = function() {
     var cbs = Utilities.getCheckboxes();
     var i;
