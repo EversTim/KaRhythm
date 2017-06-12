@@ -5,7 +5,10 @@
 @main("Welcome to KBD") {
     <h1> Welcome to KBD! </h1>
     @helper.form(routes.HomeController.postPattern, 'id -> "pattern_form") {
-        @helper.input(patternForm("name")){(id, name, value, args) => Pattern name: <input id='name' name='name' value='@value'/>}
+        @helper.input(patternForm("name")){(id, name, value, args) =>
+        <div id='patternNameDiv' class='patternNameDiv'>
+        Pattern name: <input id='name' name='name' value='@value'/>}
+        </div>
         @checkboxFormPart(patternForm, soundNames)
         @trackAndLengthFormPart(patternForm)
         <button type='submit' id='saveButton'>Save</button>
