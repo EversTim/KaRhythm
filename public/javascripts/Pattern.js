@@ -5,8 +5,16 @@ function Pattern() {
   var _tracks = parseInt(document.getElementById("tracks").value);
   var _data = undefined;
 
-  setPatternDataFromPage();
-  addOnChangeEventHandlers();
+  onLoad();
+
+  function onLoad() {
+    setPatternDataFromPage();
+    addOnChangeEventHandlers();
+    var i;
+    for(i = 0; i < Utilities.getCheckboxes().length; i++) {
+      updateLabelClass(Utilities.getCheckboxes()[i]);
+    }
+  }
 
   function setPatternDataFromPage() {
     _data = Utilities.makeArray(_tracks, _length)
@@ -22,10 +30,20 @@ function Pattern() {
     }
   }
 
+  function updateLabelClass(target) {
+    var parent = target.parentElement;
+    if(target.checked) {
+      parent.classList.add("checked");
+    } else {
+      parent.classList.remove("checked");
+    }
+  }
+
   function addOnChangeEventHandlers() {
     var i;
     for(i = 0; i < Utilities.getCheckboxes().length; i++) {
       Utilities.getCheckboxes()[i].addEventListener("click", setPatternDataFromPage);
+      Utilities.getCheckboxes()[i].addEventListener("click", e => updateLabelClass(e.target));
     }
   }
 

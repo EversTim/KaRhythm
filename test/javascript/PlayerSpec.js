@@ -106,10 +106,6 @@ describe("A Player", function() {
     for (i = 0; i < player.getPattern().getTracks(); i++) {
       expect(player.getAudioElementByTrackNumber(i)).toBeDefined();
     }
-  })
-
-  it("should have a pattern with length and number of tracks matching the available checkboxes", function() {
-    expect(player.getCheckboxes().length).toBe(player.getPattern().getLength() * player.getPattern().getTracks());
   });
 
   it("should be able to retrieve an audio element by tracknumber", function() {

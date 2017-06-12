@@ -12,16 +12,10 @@ function Player() {
 
   var _tempo = 120;
 
-  var _checkboxes = document.getElementsByClassName("pccheckbox")
-
   var _pattern = new Pattern();
 
   var _audioElements = document.getElementsByTagName("audio");
   var _numberOfAudioElements = _audioElements.length;
-
-  if (_checkboxes.length != _pattern.getLength() * _pattern.getTracks()) {
-    throw 'LengthTrackBoxCountMismatch';
-  }
 
   function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
@@ -86,21 +80,14 @@ function Player() {
         return elem;
       }
     }
-    console.log(track);
     throw 'AudioElementForTrackNotFoundException';
   }
 
   function isNumber(key) {
-    var nb = parseInt(key);
-    if (isNaN(nb)) {
-      return false;
-    } else {
-      return true;
-    }
+    return !isNaN(parseInt(key));
   }
 
   function numberKey(tracknb) {
-    console.log(_keyboardBeat);
     if (_keyboardBeat !== undefined) {
       Utilities.getCheckbox(tracknb, _keyboardBeat).click(); // click to trigger events
       if (Utilities.getCheckbox(tracknb, _keyboardBeat).checked) {
@@ -176,9 +163,6 @@ function Player() {
       for (i = 0; i < _pattern.getTracks(); i++) {
         this.getAudioElement(i).play();
       }
-    },
-    getCheckboxes: function() {
-      return _checkboxes;
     },
     getAudioElementByTrackNumber: function(track) {
       return audioElementsByTrackNumber(track);
