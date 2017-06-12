@@ -29,7 +29,7 @@ abstract class PatternController @Inject()(pc: PatternCollection) extends Contro
   def from(patternID: Int): Action[AnyContent] = Action.async {
     pc.get(patternID).map {
       case Some(p) => createResult(p)
-      case None => NotFound("ID " + patternID + " not found.")
+      case None => NotFound("404 error: ID " + patternID + " not found.")
     }
   }
 
