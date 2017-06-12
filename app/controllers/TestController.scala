@@ -9,7 +9,7 @@ import nl.sogyo.kbd.db.{PatternCollection, SoundCollection}
 class TestController @Inject()(pc: PatternCollection, sc: SoundCollection) extends PatternController(pc, sc) {
 
   def test(id: Int): Action[AnyContent] =
-    if(id <= pc.numberOfTestPatterns) from(id)
+    if(id <= pc.numberOfTestPatterns) fromPatternID(id)
     else Action(NotFound)
 
 }

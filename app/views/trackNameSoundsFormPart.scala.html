@@ -1,0 +1,16 @@
+@import nl.sogyo.kbd.forms._
+@(patternForm: Form[PatternForm], trackNumber: Int, soundNames: Seq[Option[String]])(implicit messages: Messages)
+@implicitField = @{ helper.FieldConstructor(plainFieldConstructor.f) }
+
+<div id='trackNameSound_@trackNumber' class='trackNameSoundDiv'>
+@helper.input(patternForm("tracknames")("[" + trackNumber + "]")) { (id, name, value, args) =>
+<div id='trackName_@trackNumber' class='trackNameDiv'>
+Track name: <input id='name_@trackNumber' name='tracknames[@trackNumber]' value='@value' data-id='@id' data-name='@name'/>
+</div>
+}
+@helper.input(patternForm("soundnames")("[" + trackNumber + "]")) { (id, name, value, args) =>
+<div id='trackSound_@trackNumber' class='trackSoundDiv'>
+Track sound: @trackSoundsFormPart(trackNumber, id, name, value, soundNames)
+</div>
+}
+</div>

@@ -13,7 +13,7 @@ import scala.concurrent.ExecutionContext.Implicits.global
 class HomeController @Inject()(pc: PatternCollection, sc: SoundCollection) extends PatternController(pc, sc) {
 
   def index: Action[AnyContent] = {
-    from(1)
+    fromPatternID(1)
   }
 
   def postPattern: Action[AnyContent] = Action.async { implicit request =>
@@ -29,7 +29,7 @@ class HomeController @Inject()(pc: PatternCollection, sc: SoundCollection) exten
           tracks.map(ts => Pattern(pForm.name, ts: _*))
         }
         val fid = pattern.flatMap(pc.post)
-        fid.map(id => Redirect(routes.HomeController.from(id)))
+        fid.map(id => Redirect(routes.HomeController.fromPatternID(id)))
       }
     )
   }

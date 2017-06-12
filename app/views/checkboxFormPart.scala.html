@@ -3,12 +3,8 @@
 @implicitField = @{ helper.FieldConstructor(checkboxFieldConstructor.f) }
 @helper.repeatWithIndex(patternForm("boxes")) { (s, trackNumber) =>
 <div class="singleTrack" id='trackdiv-@trackNumber'>
-    @helper.input(patternForm("tracknames")("[" + trackNumber + "]")) { (id, name, value, args) =>
-        Track name: <input id='name_@trackNumber' name='tracknames[@trackNumber]' value='@value' data-id='@id' data-name='@name'/>
-    }(plainFieldConstructor.f, messages)
-    @helper.input(patternForm("soundnames")("[" + trackNumber + "]")) { (id, name, value, args) =>
-        Track sound: @trackSoundsFormPart(trackNumber, id, name, value, soundNames)
-    }(plainFieldConstructor.f, messages)
+    @trackNameSoundsFormPart(patternForm, trackNumber, soundNames)
+    <div class='checkboxWrapper'>
     @helper.repeatWithIndex(s) { (c, beat) =>
     @helper.input(c){ (id, name, isChecked, args) =>
     <label class='pccheckboxlabel'>
@@ -21,5 +17,6 @@
            name='boxes[@trackNumber][@beat]' value='false' />
     }
     }
+    </div>
 </div>
 }

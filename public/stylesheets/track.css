@@ -1,0 +1,12 @@
+.singleTrack {
+  display: block;
+  position: relative;
+}
+
+.trackNameSoundDiv {
+  display: inline-block;
+}
+
+.checkboxWrapper {
+  display: inline-block;
+}

@@ -27,7 +27,7 @@ abstract class PatternController @Inject()(pc: PatternCollection, sc: SoundColle
     )(PatternForm.apply)(PatternForm.unapply)
   )
 
-  def from(patternID: Int): Action[AnyContent] = Action.async {
+  def fromPatternID(patternID: Int): Action[AnyContent] = Action.async {
     pc.get(patternID).flatMap {
       case Some(p) => createResult(p)
       case None => Future(NotFound("404 error: ID " + patternID + " not found."))
