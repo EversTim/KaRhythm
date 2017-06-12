@@ -40,11 +40,4 @@ abstract class PatternController @Inject()(pc: PatternCollection, sc: SoundColle
     val soundMap = p.generateSoundMap
     sc.getAllNames.map(_.sorted).map(_.map(Some(_))).map(names => Ok(views.html.index(soundMap, names)(filledForm)))
   }
-
-  /*def from(patternName: String): Action[AnyContent] = Action.async {
-    pc.get(patternName).map {
-      case Some(p) => createResult(p)
-      case None => NotFound("ID " + patternName + " not found.")
-    }
-  }*/
 }
