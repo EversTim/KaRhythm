@@ -10,7 +10,7 @@ import scala.concurrent._
 import scala.concurrent.ExecutionContext.Implicits.global
 
 @Singleton
-class HomeController @Inject()(pc: PatternCollection, sc: SoundCollection) extends PatternController(pc) {
+class HomeController @Inject()(pc: PatternCollection, sc: SoundCollection) extends PatternController(pc, sc) {
 
   def index: Action[AnyContent] = {
     from(1)

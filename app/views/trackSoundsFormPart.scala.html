@@ -1,0 +1,8 @@
+@(trackNumber: Int, id: String, name: String, value: Option[String], soundNames: Seq[Option[String]])
+
+<select id='sound_@{trackNumber}' name='soundnames[@trackNumber]'>
+    @for(sn <- soundNames) {
+        <option id='sound_@{trackNumber}_@{sn}' name='soundnames[@trackNumber]' value='@sn'
+        @if(sn==value) { selected } >@sn</option>
+    }
+</select>

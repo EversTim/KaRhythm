@@ -1,5 +1,5 @@
 @import nl.sogyo.kbd.forms._
-@(patternForm: Form[PatternForm])(implicit messages: Messages)
+@(patternForm: Form[PatternForm], soundNames: Seq[Option[String]])(implicit messages: Messages)
 @implicitField = @{ helper.FieldConstructor(checkboxFieldConstructor.f) }
 @helper.repeatWithIndex(patternForm("boxes")) { (s, trackNumber) =>
 <div class="singleTrack" id='trackdiv-@trackNumber'>
@@ -7,7 +7,7 @@
         Track name: <input id='name_@trackNumber' name='tracknames[@trackNumber]' value='@value' data-id='@id' data-name='@name'/>
     }(plainFieldConstructor.f, messages)
     @helper.input(patternForm("soundnames")("[" + trackNumber + "]")) { (id, name, value, args) =>
-        Track sound: <input id='sound_@trackNumber' name='soundnames[@trackNumber]' value='@value' data-id='@id' data-name='@name'/>
+        Track sound: @trackSoundsFormPart(trackNumber, id, name, value, soundNames)
     }(plainFieldConstructor.f, messages)
     @helper.repeatWithIndex(s) { (c, beat) =>
     @helper.input(c){ (id, name, isChecked, args) =>
