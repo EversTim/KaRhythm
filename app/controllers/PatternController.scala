@@ -38,7 +38,7 @@ abstract class PatternController @Inject()(pc: PatternCollection, sc: SoundColle
     val filledForm = patternForm.fill(PatternForm(p.name, p.data.map(_.data), p.data.map(_.name), p.data.map(_.sound.name), p.length, p.tracks))
 
     val soundMap = p.generateSoundMap
-    sc.getAllNames.map(_.map(Some(_))).map(names => Ok(views.html.index(soundMap, names)(filledForm)))
+    sc.getAllNames.map(_.sorted).map(_.map(Some(_))).map(names => Ok(views.html.index(soundMap, names)(filledForm)))
   }
 
   /*def from(patternName: String): Action[AnyContent] = Action.async {
