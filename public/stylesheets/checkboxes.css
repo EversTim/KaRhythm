@@ -5,8 +5,8 @@
   margin: 2px;
   border-radius: 10px;
   border-style: solid;
-  background-color: black;
-  border-color: white;
+  background-color: grey;
+  border-color: black;
 }
 
 .pccheckbox {
@@ -18,5 +18,9 @@
 }
 
 .pccheckboxcontainer.active {
-  border-color: lightgreen;
+  border-color: red;
+}
+
+.checkboxWrapper {
+  margin-left: 20px;
 }

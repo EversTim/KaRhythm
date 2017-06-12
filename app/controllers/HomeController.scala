@@ -19,14 +19,15 @@ class HomeController @Inject()(pc: PatternCollection, sc: SoundCollection) exten
   def postPattern: Action[AnyContent] = Action.async { implicit request =>
     patternForm.bindFromRequest.fold(
       formWithErrors => {
-        Future(BadRequest(formWithErrors.toString))
+        Future.successful(BadRequest(formWithErrors.toString))
       },
       pForm => {
         val pattern: Future[Pattern] = {
           val tracks: Future[Seq[Track]] = Future.sequence(for {
             ((data, name), soundName) <- pForm.data.zip(pForm.trackNames).zip(pForm.trackSounds)
-          } yield sc.get(soundName).map(soundOption => Track(name, soundOption.get, data: _*)))
-          tracks.map(ts => Pattern(pForm.name, ts: _*))
+          } yield sc.get(soundName).map(soundOption => Track(name, soundOption.get, (data ++ Seq.fill(pForm.length - data.length)(false)).take(pForm.length): _*)))
+          val paddedTracks = tracks.map(ts => (ts ++ Seq.fill(pForm.tracks - ts.length)(Track.empty(pForm.length))).take(pForm.tracks))
+          paddedTracks.map(ts => Pattern(pForm.name, ts: _*))
         }
         val fid = pattern.flatMap(pc.post)
         fid.map(id => Redirect(routes.HomeController.fromPatternID(id)))

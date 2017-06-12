@@ -1,6 +1,6 @@
 package nl.sogyo.kbd.db
 
-import java.sql.{Connection, Statement}
+import java.sql.{Connection, PreparedStatement, Statement}
 import javax.inject._
 
 import nl.sogyo.kbd.domain._
@@ -59,23 +59,32 @@ class PatternDB @Inject()(db: Database) extends PatternCollection {
       val patternResult = patternStatement.getGeneratedKeys
       patternResult.next()
       val patternID = patternResult.getInt(1)
+      val trackString =
+        """
+          |INSERT INTO tracks (name, data, pattern_id, sound_id)
+          |VALUES (?, ?, ?, ?);
+        """.
+          stripMargin
+      val trackStatement = conn.prepareStatement(trackString)
+      val soundString =
+        """
+          |SELECT sound_id
+          |FROM sounds
+          |WHERE name = ?;
+        """.
+          stripMargin
+      val soundStatement = conn.prepareStatement(soundString)
       for (track <- p.data) {
-        insertTrack(conn, patternID, track)
+        insertTrack(trackStatement, soundStatement, patternID, track)
       }
 
       patternID
     }
   }
 
-  private def insertTrack(conn: Connection, patternID: Int, track: Track) = {
-    val trackString =
-      """
-        |INSERT INTO tracks (name, data, pattern_id, sound_id)
-        |VALUES (?, ?, ?, ?);
-      """.
-        stripMargin
-    val trackStatement = conn.prepareStatement(trackString)
-    val soundID = findSoundID(conn, track.sound)
+  private def insertTrack(trackStatement: PreparedStatement, soundStatement: PreparedStatement, patternID: Int, track: Track) = {
+    trackStatement.clearParameters()
+    val soundID = findSoundID(soundStatement, track.sound)
     trackStatement.setString(1, track.name)
     trackStatement.setString(2, boolSeqToString(track.data))
     trackStatement.setLong(3, patternID)
@@ -83,20 +92,12 @@ class PatternDB @Inject()(db: Database) extends PatternCollection {
     trackStatement.executeUpdate
   }
 
-  private def findSoundID(conn: Connection, sound: Sound) = {
-    val soundString =
-      """
-        |SELECT sound_id
-        |FROM sounds
-        |WHERE name = ?;
-      """.
-        stripMargin
-    val soundStatement = conn.prepareStatement(soundString)
+  private def findSoundID(soundStatement: PreparedStatement, sound: Sound) = {
+    soundStatement.clearParameters()
     soundStatement.setString(1, sound.name)
     val resultSet = soundStatement.executeQuery
     resultSet.next()
-    val sID = resultSet.getInt(1)
-    sID
+    resultSet.getInt(1)
   }
 }
 

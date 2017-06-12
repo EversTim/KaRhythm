@@ -15,7 +15,7 @@ import play.api.test.Helpers._
 class HomeControllerSpec extends PlaySpec with GuiceOneAppPerTest  {
 
   val sc = new SoundCollectionMock
-  val pc = new PatternCollectionMock(sc)
+  val pc = new PatternCollectionMock
 
   "HomeController GET" should {
 

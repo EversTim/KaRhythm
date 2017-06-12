@@ -2,12 +2,15 @@
 @(map: Map[Int, String], soundNames: Seq[Option[String]])(patternForm: Form[PatternForm])(implicit messages: Messages)
 @implicitField = @{ helper.FieldConstructor(plainFieldConstructor.f) }
 
-@main("Welcome to KBD") {
-    <h1> Welcome to KBD! </h1>
+@main("KBD") {
+    <h1>KBD</h1>
     @helper.form(routes.HomeController.postPattern, 'id -> "pattern_form") {
         @helper.input(patternForm("name")){(id, name, value, args) =>
         <div id='patternNameDiv' class='patternNameDiv'>
-        Pattern name: <input id='name' name='name' value='@value'/>}
+            <div class='text patternText'>Pattern name:</div>
+            <div class='postText'>
+                <input id='name' name='name' value='@value'/>}
+            </div>
         </div>
         @checkboxFormPart(patternForm, soundNames)
         @trackAndLengthFormPart(patternForm)
