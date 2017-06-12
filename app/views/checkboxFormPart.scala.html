@@ -7,11 +7,10 @@
     <div class='checkboxWrapper'>
     @helper.repeatWithIndex(s) { (c, beat) =>
     @helper.input(c){ (id, name, isChecked, args) =>
-    <label class='pccheckboxlabel'>
         <input type='checkbox' class='pccheckbox' id='@id'
                data-beat='@beat' data-tracknumber='@trackNumber'
                name='boxes[@trackNumber][@beat]' value='true'
-               @if(isChecked.get== "true") { checked } else {} /></label>
+               @if(isChecked.get== "true") { checked } else {} />
     <input type='hidden' class='pccheckboxhidden' id='hidden_@id'
            data-beat='@beat' data-tracknumber='@trackNumber'
            name='boxes[@trackNumber][@beat]' value='false' />

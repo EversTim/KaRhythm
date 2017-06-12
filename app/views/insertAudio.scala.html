@@ -1,7 +1,6 @@
 @(map: Map[Int, String])
 @for((i, s) <- map) {
-<p>@i, @s</p>
-<audio controls id='@s' data-tracknumber='@i'>
+<audio id='@s' data-tracknumber='@i'>
     <source src='@routes.Assets.versioned("sounds/"+s)' />
     Your browser does not support the audio tag.
 </audio> }
