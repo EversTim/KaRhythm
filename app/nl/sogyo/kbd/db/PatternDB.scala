@@ -103,6 +103,5 @@ class PatternDB @Inject()(db: Database) extends PatternCollection {
 object PatternDB {
   def boolSeqToString(bs: Seq[Boolean]): String = bs.foldLeft("")((acc, bl) => acc + (if (bl) "1" else "0"))
 
-  def stringToBoolSeq(s: String): Seq[Boolean] = 
-    s.foldLeft(Seq.empty[Boolean])((acc, c) => acc :+ (c == '1'))
+  def stringToBoolSeq(s: String): Seq[Boolean] = s.foldLeft(Seq.empty[Boolean])((acc, c) => acc :+ (c == '1'))
 }
