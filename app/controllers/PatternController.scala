@@ -30,13 +30,12 @@ abstract class PatternController @Inject()(pc: PatternCollection, sc: SoundColle
   def fromPatternID(patternID: Int): Action[AnyContent] = Action.async { implicit request =>
     pc.get(patternID).flatMap {
       case Some(p) => createResult(p)
-      case None => Future(NotFound("404 error: ID " + patternID + " not found."))
+      case None => Future.successful(NotFound("404 error: ID " + patternID + " not found."))
     }
   }
 
   def createResult(p: Pattern)(implicit rc: RequestHeader): Future[Result] = {
     val filledForm = patternForm.fill(PatternForm(p.name, p.data.map(_.data), p.data.map(_.name), p.data.map(_.sound.name), p.length, p.tracks))
-
     val soundMap = p.generateSoundMap
     sc.getAllNames.map(_.sorted).map(_.map(Some(_))).map(names => Ok(views.html.index(soundMap, names)(filledForm)))
   }

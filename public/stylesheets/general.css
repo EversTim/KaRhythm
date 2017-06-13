@@ -16,3 +16,7 @@ form {
 .postText {
   display: inline-block;
 }
+
+input[type=hidden] {
+  display: none;
+}

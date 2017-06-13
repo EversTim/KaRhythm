@@ -63,8 +63,7 @@ class PatternDB @Inject()(db: Database) extends PatternCollection {
         """
           |INSERT INTO tracks (name, data, pattern_id, sound_id)
           |VALUES (?, ?, ?, ?);
-        """.
-          stripMargin
+        """.stripMargin
       val trackStatement = conn.prepareStatement(trackString)
       val soundString =
         """
@@ -104,13 +103,6 @@ class PatternDB @Inject()(db: Database) extends PatternCollection {
 object PatternDB {
   def boolSeqToString(bs: Seq[Boolean]): String = bs.foldLeft("")((acc, bl) => acc + (if (bl) "1" else "0"))
 
-  def stringToBoolSeq(s: String): Seq[Boolean] = {
-    @tailrec
-    def helper(s: String, acc: Seq[Boolean]): Seq[Boolean] = {
-      if (s.isEmpty) acc
-      else helper(s.tail, acc :+ (s.head == '1'))
-    }
-
-    helper(s, Nil)
-  }
+  def stringToBoolSeq(s: String): Seq[Boolean] = 
+    s.foldLeft(Seq.empty[Boolean])((acc, c) => acc :+ (c == '1'))
 }
