@@ -1,10 +1,11 @@
 @import nl.sogyo.kbd.forms._
-@(map: Map[Int, String], soundNames: Seq[Option[String]])(patternForm: Form[PatternForm])(implicit messages: Messages)
+@(map: Map[Int, String], soundNames: Seq[Option[String]])(patternForm: Form[PatternForm])(implicit messages: Messages, rh: RequestHeader)
 @implicitField = @{ helper.FieldConstructor(plainFieldConstructor.f) }
 
 @main("KBD") {
     <h1>KBD</h1>
     @helper.form(routes.HomeController.postPattern, 'id -> "pattern_form") {
+        @helper.CSRF.formField
         @helper.input(patternForm("name")){(id, name, value, args) =>
         <div id='patternNameDiv' class='patternNameDiv'>
             <div class='text patternText'>Pattern name:</div>
