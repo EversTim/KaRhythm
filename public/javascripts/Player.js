@@ -133,6 +133,8 @@ function Player() {
       return (_interval !== undefined);
     },
     onKeyDown: function(e, testBool = false) {
+      if(e.target.nodeName=="INPUT") return;
+      
       var key = e.key;
       if (key === "g" || key === "p") {
         this.togglePlaying(testBool);
