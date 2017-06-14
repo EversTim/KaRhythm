@@ -8,6 +8,8 @@ import play.api.data.Forms._
 import play.api.Play.current
 import play.api.i18n.Messages.Implicits._
 import nl.sogyo.kbd.db._
+import nl.sogyo.kbd.db.patterns.PatternCollection
+import nl.sogyo.kbd.db.sounds.SoundCollection
 import nl.sogyo.kbd.domain.{Pattern, Track}
 import nl.sogyo.kbd.forms._
 

@@ -1,6 +1,8 @@
 package controllers
 
 import nl.sogyo.kbd.db._
+import nl.sogyo.kbd.db.patterns.PatternCollectionMock
+import nl.sogyo.kbd.db.sounds.SoundCollectionMock
 import org.scalatestplus.play._
 import org.scalatestplus.play.guice.GuiceOneAppPerTest
 import play.api.test._

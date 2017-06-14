@@ -1,4 +1,4 @@
-package nl.sogyo.kbd.db
+package nl.sogyo.kbd.db.sounds
 
 import nl.sogyo.kbd.domain.Sound
 

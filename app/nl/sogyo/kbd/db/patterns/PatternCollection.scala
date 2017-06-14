@@ -1,4 +1,4 @@
-package nl.sogyo.kbd.db
+package nl.sogyo.kbd.db.patterns
 
 import nl.sogyo.kbd.domain.Pattern
 

@@ -1,15 +1,14 @@
-package nl.sogyo.kbd.db
+package nl.sogyo.kbd.db.patterns
 
-import java.sql.{Connection, PreparedStatement, Statement}
+import java.sql.{PreparedStatement, Statement}
 import javax.inject._
 
 import nl.sogyo.kbd.domain._
 import play.api.db.Database
 
-import scala.annotation.tailrec
-import scala.concurrent.Future
 import scala.collection._
 import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future
 
 @Singleton
 class PatternDB @Inject()(db: Database) extends PatternCollection {

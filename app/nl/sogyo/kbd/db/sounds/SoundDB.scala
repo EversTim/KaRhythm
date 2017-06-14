@@ -1,9 +1,10 @@
-package nl.sogyo.kbd.db
-
-import nl.sogyo.kbd.domain.Sound
+package nl.sogyo.kbd.db.sounds
 
 import javax.inject._
+
+import nl.sogyo.kbd.domain.Sound
 import play.api.db.Database
+
 import scala.collection._
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future

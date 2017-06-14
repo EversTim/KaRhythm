@@ -1,9 +1,9 @@
-package nl.sogyo.kbd.db
+package nl.sogyo.kbd.db.sounds
 
 import nl.sogyo.kbd.domain.Sound
 
-import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future
 
 class SoundCollectionMock extends SoundCollection {
   val map: Map[Int, Sound] = Map(

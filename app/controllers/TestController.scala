@@ -3,7 +3,8 @@ package controllers
 import javax.inject._
 
 import play.api.mvc._
-import nl.sogyo.kbd.db.{PatternCollection, SoundCollection}
+import nl.sogyo.kbd.db.patterns.PatternCollection
+import nl.sogyo.kbd.db.sounds.SoundCollection
 
 @Singleton
 class TestController @Inject()(pc: PatternCollection, sc: SoundCollection) extends PatternController(pc, sc) {
