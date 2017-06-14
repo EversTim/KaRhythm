@@ -1,3 +1,3 @@
-package nl.sogyo.kbd.domain
+package nl.sogyo.kbd.domain.exceptions
 
 class NotEnoughSoundsException(msg: String = "") extends Exception(msg)

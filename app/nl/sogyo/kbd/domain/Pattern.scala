@@ -1,5 +1,7 @@
 package nl.sogyo.kbd.domain
 
+import nl.sogyo.kbd.domain.exceptions.{NoTracksDefinedException, UnevenLengthException}
+
 case class Pattern(name: String, data: Track*) {
 
   val length: Int = data.foldLeft(Int.MinValue)((acc, s) => acc.max(s.length))

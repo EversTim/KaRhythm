@@ -51,16 +51,18 @@ class PatternController @Inject()(pc: PatternCollection, sc: SoundCollection) ex
         Future.successful(BadRequest(views.html.index(None, None, formWithErrors)))
       },
       pForm => {
-        val pattern: Future[Pattern] = {
-          val tracks: Future[Seq[Track]] = Future.sequence(for {
-            ((data, name), soundName) <- pForm.data.zip(pForm.trackNames).zip(pForm.trackSounds)
-          } yield sc.get(soundName).map(soundOption => Track(name, soundOption.get, (data ++ Seq.fill(pForm.length - data.length)(false)).take(pForm.length): _*)))
-          val paddedTracks = tracks.map(ts => (ts ++ Seq.fill(pForm.tracks - ts.length)(Track.empty(pForm.length))).take(pForm.tracks))
-          paddedTracks.map(ts => Pattern(pForm.name, ts: _*))
-        }
-        val fid = pattern.flatMap(pc.post)
-        fid.map(id => Redirect(routes.PatternController.fromPatternID(id)))
+        val pattern: Future[Pattern] = makePatternFromForm(pForm)
+        val patternID = pattern.flatMap(pc.post)
+        patternID.map(id => Redirect(routes.PatternController.fromPatternID(id)))
       }
     )
+  }
+
+  def makePatternFromForm(pForm: PatternForm): Future[Pattern] = {
+    val tracks: Future[Seq[Track]] = Future.sequence(for {
+      ((data, name), soundName) <- pForm.data.zip(pForm.trackNames).zip(pForm.trackSounds)
+    } yield sc.get(soundName).map(soundOption => Track(name, soundOption.get, (data ++ Seq.fill(pForm.length - data.length)(false)).take(pForm.length): _*)))
+    val paddedTracks = tracks.map(ts => (ts ++ Seq.fill(pForm.tracks - ts.length)(Track.empty(pForm.length))).take(pForm.tracks))
+    paddedTracks.map(ts => Pattern(pForm.name, ts: _*))
   }
 }

@@ -1,5 +1,7 @@
 package nl.sogyo.kbd.domain
 
+import nl.sogyo.kbd.domain.exceptions.{TrackTooLongException, ZeroLengthTrackException}
+
 case class Track(name: String, sound: Sound, data: Boolean*) {
 
   if (data.isEmpty)

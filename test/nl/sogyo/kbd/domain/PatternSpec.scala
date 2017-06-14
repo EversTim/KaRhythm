@@ -1,5 +1,6 @@
 package nl.sogyo.kbd.domain
 
+import nl.sogyo.kbd.domain.exceptions.{NoTracksDefinedException, UnevenLengthException, ZeroLengthTrackException}
 import org.scalatest._
 
 class PatternSpec extends FlatSpec with MustMatchers {
