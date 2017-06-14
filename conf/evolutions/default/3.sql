@@ -5,7 +5,7 @@
 CREATE TABLE users (
     user_id uuid NOT NULL DEFAULT gen_random_uuid() PRIMARY KEY,
     email text NOT NULL UNIQUE,
-    password text NOT NULL,
+    password text NOT NULL
 );
 
 # --- !Downs
