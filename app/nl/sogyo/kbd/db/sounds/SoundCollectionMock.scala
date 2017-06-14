@@ -1,11 +1,14 @@
 package nl.sogyo.kbd.db.sounds
 
+import javax.inject._
+
 import nl.sogyo.kbd.domain.Sound
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-class SoundCollectionMock extends SoundCollection {
+@Singleton
+class SoundCollectionMock @Inject() extends SoundCollection {
   val map: Map[Int, Sound] = Map(
     1 -> Sound("Windows Ding", "Windows Ding.wav"),
     2 -> Sound("Windows Error", "Windows Error.wav"),

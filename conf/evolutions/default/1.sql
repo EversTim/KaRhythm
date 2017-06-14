@@ -17,8 +17,8 @@ CREATE TABLE tracks (
     track_id SERIAL PRIMARY KEY,
     name text NOT NULL,
     data text NOT NULL,
-    pattern_id integer references patterns(pattern_id),
-    sound_id integer references sounds(sound_id)
+    pattern_id integer REFERENCES patterns(pattern_id),
+    sound_id integer REFERENCES sounds(sound_id)
 );
 
 INSERT INTO sounds(name, file_location) VALUES ('Windows Ding', 'Windows Ding.wav');
