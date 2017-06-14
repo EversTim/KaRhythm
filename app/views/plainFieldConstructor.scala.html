@@ -1,3 +1,7 @@
 @(elements: helper.FieldElements)
 
-@elements.input
+<div class='@if(elements.hasErrors) {error} plainErrorDiv'>
+    @elements.input
+    <span class='errors'>@elements.errors.mkString(", ")</span>
+    <span class='info'>@elements.infos.mkString(", ")</span>
+</div>

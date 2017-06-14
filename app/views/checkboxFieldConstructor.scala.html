@@ -1,5 +1,8 @@
 @(elements: helper.FieldElements)
-
-<label class='pccheckboxcontainer inactive' id='pccbc-@elements.id.split("_")(1)-@elements.id.split("_")(2)' data-beat='@elements.id.split("_")(2)' data-tracknumber='@elements.id.split("_")(1)'>
-    @elements.input
-</label>
+<div class='@if(elements.hasErrors) {error} pccheckboxErrorDiv'>
+    <label class='pccheckboxcontainer inactive' id='pccbc-@elements.id.split("_")(1)-@elements.id.split("_")(2)' data-beat='@elements.id.split("_")(2)' data-tracknumber='@elements.id.split("_")(1)'>
+        @elements.input
+    </label>
+    <span class='errors'>@elements.errors.mkString(", ")</span>
+    <span class='info'>@elements.infos.mkString(", ")</span>
+</div>

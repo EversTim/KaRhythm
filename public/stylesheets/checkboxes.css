@@ -24,3 +24,7 @@
 .checkboxWrapper {
   margin-left: 20px;
 }
+
+.pccheckboxErrorDiv {
+  display: inline-block;
+}

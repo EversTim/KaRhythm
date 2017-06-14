@@ -20,3 +20,8 @@ form {
 input[type=hidden] {
   display: none;
 }
+
+.errors {
+  display: inline;
+  color: red;
+}

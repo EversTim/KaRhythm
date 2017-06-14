@@ -1,8 +1,8 @@
 'use strict';
 
 function Pattern() {
-  var _length = parseInt(document.getElementById("length").value);
-  var _tracks = parseInt(document.getElementById("tracks").value);
+  var _length = parseInt(document.getElementById("patternLength").value);
+  var _tracks = parseInt(document.getElementById("patternTracks").value);
   var _data = undefined;
 
   onLoad();

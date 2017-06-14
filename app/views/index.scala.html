@@ -1,5 +1,5 @@
 @import nl.sogyo.kbd.forms._
-@(map: Map[Int, String], soundNames: Seq[Option[String]], patternForm: Form[PatternForm])(implicit messages: Messages, rh: RequestHeader)
+@(map: Option[Map[Int, String]], allSoundNames: Option[Seq[Option[String]]], patternForm: Form[PatternForm])(implicit messages: Messages, rh: RequestHeader)
 @implicitField = @{ helper.FieldConstructor(plainFieldConstructor.f) }
 
 @main("KBD") {
@@ -8,17 +8,17 @@
         @helper.CSRF.formField
         @helper.input(patternForm("name")){(id, name, value, args) =>
         <div id='patternNameDiv' class='patternNameDiv'>
-            <div class='text patternText'>Pattern name:</div>
+            <label for='patternName' class='text patternText'>Pattern name:</label>
             <div class='postText'>
-                <input id='name' name='name' value='@value'/>}
+                <input id='patternName' name='name' value='@value'/>}
             </div>
         </div>
-        @checkboxFormPart(patternForm, soundNames)
+        @checkboxFormPart(patternForm, allSoundNames)
         @trackAndLengthFormPart(patternForm)
         <button type='submit' id='saveButton'>Save</button>
     }
     @controls() <br />
-    @insertAudio(map)
+    @if(!map.isEmpty) { @insertAudio(map.get) }
     <script src='@routes.Assets.versioned("javascripts/Utilities.js")' type='text/javascript'></script>
     <script src='@routes.Assets.versioned("javascripts/Pattern.js")' type='text/javascript'></script>
     <script src='@routes.Assets.versioned("javascripts/Player.js")' type='text/javascript'></script>

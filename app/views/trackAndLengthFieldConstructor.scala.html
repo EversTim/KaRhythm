@@ -1,0 +1,6 @@
+@(elements: helper.FieldElements)
+
+<div class='@if(elements.hasErrors) {error} trackAndLengthErrorDiv'>
+    @elements.input
+    <span class='errors'>@if(elements.hasErrors) {That's not a number!} else { }</span>
+</div>

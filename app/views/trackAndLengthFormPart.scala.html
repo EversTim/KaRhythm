@@ -2,20 +2,20 @@
 
 @(patternForm: Form[PatternForm])(implicit messages: Messages)
 
-@implicitField = @{ helper.FieldConstructor(plainFieldConstructor.f) }
+@implicitField = @{ helper.FieldConstructor(trackAndLengthFieldConstructor.f) }
 
 <div id='trackAndLengthDiv' class='trackAndLengthDiv'>
 @helper.input(patternForm("tracks")){(id, name, value, args) =>
-    <div id='trackDiv' class='trackDiv'><div class='text talText'>Tracks:</div>
+    <div id='trackDiv' class='trackDiv'><label for='patternTracks' class='text talText'>Tracks:</label>
     <div class='postText'>
-        <input id='tracks' name='tracks' value='@value'/>
+        <input id='patternTracks' name='tracks' value='@value'/>
     </div>
     </div>
 }
 @helper.input(patternForm("length")){(id, name, value, args) =>
-    <div id='lengthDiv' class='lengthDiv'><div class='text talText'>Length:</div>
+    <div id='lengthDiv' class='lengthDiv'><label for='patternLength' class='text talText'>Length:</label>
     <div class='postText'>
-        <input id='length' name='length' value='@value'/>
+        <input id='patternLength' name='length' value='@value'/>
     </div>
     </div>
 }
