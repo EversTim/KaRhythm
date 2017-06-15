@@ -13,6 +13,8 @@ GET     /logout                     controllers.LoginController.logout
 
 POST    /postPattern                controllers.PatternController.postPattern
 
+GET     /favicon.ico                controllers.Assets.at(path="/public/images", file="favicon.ico")
+
 GET     /:id                        controllers.PatternController.fromPatternID(id: Int)
 
 GET     /test/:id                   controllers.TestController.test(id: Int)
