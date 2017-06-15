@@ -48,13 +48,13 @@ class PatternController @Inject()(pc: PatternCollection, sc: SoundCollection) ex
   def createResult(p: Pattern)(implicit request: PatternRequest[AnyContent]): Future[Result] = {
     val filledForm = patternForm.fill(PatternForm(p.name, p.data.map(_.data), p.data.map(_.name), p.data.map(_.sound.name), p.length, p.tracks))
     val soundMap = p.generateSoundMap
-    sc.getAllNames.map(_.sorted).map(_.map(Some(_))).map(names => Ok(views.html.index(Some(soundMap), Some(names), filledForm, request.username.isDefined)))
+    sc.getAllNames.map(_.sorted).map(_.map(Some(_))).map(names => Ok(views.html.pattern.index(Some(soundMap), Some(names), filledForm, request.username)))
   }
 
   def postPattern: Action[AnyContent] = UserAction.async { implicit request =>
     patternForm.bindFromRequest.fold(
       formWithErrors => {
-        Future.successful(BadRequest(views.html.index(None, None, formWithErrors, request.username.isDefined)))
+        Future.successful(BadRequest(views.html.pattern.index(None, None, formWithErrors, request.username)))
       },
       pForm => {
         val pattern: Future[Pattern] = makePatternFromForm(pForm)

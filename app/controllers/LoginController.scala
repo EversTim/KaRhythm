@@ -30,7 +30,7 @@ class LoginController @Inject()(uc: UserCollection) extends Controller {
         val valid = uc.login(User(lForm.username), lForm.password)
         valid.map {
           case true => Redirect(routes.PatternController.index()).withSession(request.session + ("username" -> lForm.username))
-          case false => Unauthorized(views.html.login(loginForm, retry = true))
+          case false => Unauthorized(views.html.login.login(loginForm, retry = true))
         }
       }
     )
@@ -38,7 +38,7 @@ class LoginController @Inject()(uc: UserCollection) extends Controller {
 
   def login(retry: Boolean = false): Action[AnyContent] = Action { implicit request =>
     if (request.session.get("username").isDefined) Redirect(routes.PatternController.index())
-    else Ok(views.html.login(loginForm, retry))
+    else Ok(views.html.login.login(loginForm, retry))
   }
 
   def logout: Action[AnyContent] = Action { implicit request =>

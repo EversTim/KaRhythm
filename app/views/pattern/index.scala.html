@@ -1,13 +1,17 @@
 @import nl.sogyo.kbd.forms._
-@(map: Option[Map[Int, String]], allSoundNames: Option[Seq[Option[String]]], patternForm: Form[PatternForm], hasLoggedIn: Boolean)(implicit messages: Messages, rh: RequestHeader)
+@(map: Option[Map[Int, String]], allSoundNames: Option[Seq[Option[String]]], patternForm: Form[PatternForm], username: Option[String])(implicit messages: Messages, rh: RequestHeader)
 @implicitField = @{ helper.FieldConstructor(plainFieldConstructor.f) }
 
-@main("KBD"){
+@views.html.main("KBD"){
     <link rel='stylesheet' media='screen' href='@routes.Assets.versioned("stylesheets/checkboxes.css")' />
     <link rel='stylesheet' media='screen' href='@routes.Assets.versioned("stylesheets/controls.css")' />
     <link rel='stylesheet' media='screen' href='@routes.Assets.versioned("stylesheets/track.css")' />
 }{
     <h1>KBD</h1>
+    <div id='greeting'>
+        Hello @if(username.isDefined) {@username.get} else {visitor}!
+    </div>
+
     @helper.form(routes.PatternController.postPattern, 'id -> "pattern_form") {
         @helper.CSRF.formField
         @helper.input(patternForm("name")){(id, name, value, args) =>
@@ -25,7 +29,7 @@
     @if(!map.isEmpty) { @insertAudio(map.get) }
 
     <div id='logbutton'>
-        @if(hasLoggedIn) {
+        @if(username.isDefined) {
             <a href='/logout' class='button'>Log out</a>
         } else {
             <a href='login' class='button'>Log in</a>

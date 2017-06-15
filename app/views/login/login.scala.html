@@ -4,7 +4,7 @@
 
 @implicitField = @{ helper.FieldConstructor(loginFieldConstructor.f) }
 
-@main("KBD Login") {
+@views.html.main("KBD Login") {
 
 }{
     @if(retry) {
@@ -17,13 +17,13 @@
         @helper.input(loginForm("username")) { (id, name, value, args) =>
             <div id='usernameDiv' class='loginDiv'>
                 <label for='username' class='text loginLabel'>Username:</label>
-                <input id='username' name='@name' value='@value' />
+                <input id='username' name='@name' value='@value' type='text'/>
             </div>
         }
         @helper.input(loginForm("password")) { (id, name, value, args) =>
         <div id='passwordDiv' class='loginDiv'>
             <label for='password' class='text loginLabel'>Password:</label>
-            <input id='password' name='@name' value='@value' />
+            <input id='password' name='@name' value='@value' type='password'/>
         </div>
         }
         <button type='submit' id='loginButton' class='button'>Login</button>
