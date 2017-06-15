@@ -1,0 +1,31 @@
+@import nl.sogyo.kbd.forms._
+
+@(loginForm: Form[LoginForm], retry: Boolean)(implicit messages: Messages, rh: RequestHeader)
+
+@implicitField = @{ helper.FieldConstructor(loginFieldConstructor.f) }
+
+@main("KBD Login") {
+
+}{
+    @if(retry) {
+        <div id='loginError' class='error'>
+            Login failed. Please try again.
+        </div>
+    }
+    @helper.form(routes.LoginController.postLogin, 'id -> "pattern_form") {
+        @helper.CSRF.formField
+        @helper.input(loginForm("username")) { (id, name, value, args) =>
+            <div id='usernameDiv' class='loginDiv'>
+                <label for='username' class='text loginLabel'>Username:</label>
+                <input id='username' name='@name' value='@value' />
+            </div>
+        }
+        @helper.input(loginForm("password")) { (id, name, value, args) =>
+        <div id='passwordDiv' class='loginDiv'>
+            <label for='password' class='text loginLabel'>Password:</label>
+            <input id='password' name='@name' value='@value' />
+        </div>
+        }
+        <button type='submit' id='loginButton' class='button'>Login</button>
+    }
+}

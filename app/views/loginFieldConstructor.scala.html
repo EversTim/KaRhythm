@@ -1,0 +1,6 @@
+@(elements: helper.FieldElements)
+<div class='@if(elements.hasErrors) {error} loginErrorDiv'>
+    @elements.input
+    <span class='errors'>@elements.errors.mkString(", ")</span>
+    <span class='info'>@elements.infos.mkString(", ")</span>
+</div>

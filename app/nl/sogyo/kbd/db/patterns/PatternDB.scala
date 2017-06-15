@@ -1,9 +1,10 @@
 package nl.sogyo.kbd.db.patterns
 
-import java.sql.{PreparedStatement, Statement}
+import java.sql.{PreparedStatement, ResultSet, Statement}
 import javax.inject._
 
 import nl.sogyo.kbd.domain._
+import nl.sogyo.kbd.users.User
 import play.api.db.Database
 
 import scala.collection._
@@ -15,7 +16,7 @@ class PatternDB @Inject()(db: Database) extends PatternCollection {
 
   import PatternDB._
 
-  def get(id: Int): Future[Option[Pattern]] = Future {
+  def select(id: Int): Future[Option[Pattern]] = Future {
     db.withConnection { conn =>
 
       val preparedString =
@@ -28,32 +29,38 @@ class PatternDB @Inject()(db: Database) extends PatternCollection {
       statement.setInt(1, id)
       val resultSet = statement.executeQuery
 
-      val tracks = mutable.Buffer[Track]()
-      var patternName: String = null
-      var hasAnswer = false
-      while (resultSet.next()) {
-        hasAnswer = true
-        patternName = resultSet.getString(1)
-        val trackName = resultSet.getString(2)
-        val data = stringToBoolSeq(resultSet.getString(3))
-        val soundName = resultSet.getString(4)
-        val soundLocation = resultSet.getString(5)
-        tracks += Track(trackName, Sound(soundName, soundLocation), data: _*)
-      }
-      if (hasAnswer) Some(Pattern(patternName, tracks: _*))
-      else None
+      patternFromResultSet(resultSet)
     }
   }
 
-  def post(p: Pattern): Future[Int] = Future {
+  private def patternFromResultSet(resultSet: ResultSet): Option[Pattern] = {
+    val tracks = mutable.Buffer[Track]()
+
+    var patternName: String = null
+    var hasAnswer = false
+    while (resultSet.next()) {
+      hasAnswer = true
+      patternName = resultSet.getString(1)
+      val trackName = resultSet.getString(2)
+      val data = stringToBoolSeq(resultSet.getString(3))
+      val soundName = resultSet.getString(4)
+      val soundLocation = resultSet.getString(5)
+      tracks += Track(trackName, Sound(soundName, soundLocation), data: _*)
+    }
+    if (hasAnswer) Some(Pattern(patternName, tracks: _*))
+    else None
+  }
+
+  def insert(p: Pattern, u: User): Future[Int] = Future {
     db.withTransaction { conn =>
       val patternString =
         """
-          |INSERT INTO patterns (name)
-          |VALUES (?);
+          |INSERT INTO patterns (name, username)
+          |VALUES (?, ?);
         """.stripMargin
       val patternStatement = conn.prepareStatement(patternString, Statement.RETURN_GENERATED_KEYS)
       patternStatement.setString(1, p.name)
+      patternStatement.setString(2, u.username)
       patternStatement.executeUpdate
       val patternResult = patternStatement.getGeneratedKeys
       patternResult.next()
@@ -96,6 +103,22 @@ class PatternDB @Inject()(db: Database) extends PatternCollection {
     val resultSet = soundStatement.executeQuery
     resultSet.next()
     resultSet.getInt(1)
+  }
+
+  def findByUser(user: User): Future[Seq[Int]] = Future {
+    db.withConnection { conn =>
+      val patternString =
+        """
+          |SELECT pattern_id
+          |FROM patterns
+          |WHERE username = ?;
+        """.stripMargin
+      val patternStatement = conn.prepareStatement(patternString)
+      patternStatement.setString(1, user.username)
+      val resultSet = patternStatement.executeQuery
+      val output = Seq.empty[Int]
+      ???
+    }
   }
 }
 

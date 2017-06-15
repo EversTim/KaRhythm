@@ -10,7 +10,7 @@ import play.api.test.Helpers._
 
 /**
  * Add your spec here.
- * You can mock out a whole application including requests, plugins etc.
+ * You can mock out a whole application including actionsrequests, plugins etc.
  *
  * For more information, see https://www.playframework.com/documentation/latest/ScalaTestingWithScalaTest
  */
@@ -38,7 +38,7 @@ class HomeControllerSpec extends PlaySpec with GuiceOneAppPerTest  {
     }
 
     "render the index page fromPatternID the router" in {
-      // Need to specify Host header to get through AllowedHostsFilter
+      // Need to specify Host header to select through AllowedHostsFilter
       val request = FakeRequest(GET, "/").withHeaders("Host" -> "localhost")
       val home = route(app, request).get
 

@@ -1,8 +1,10 @@
 package nl.sogyo.kbd.db.users
 
+import java.sql.Connection
 import javax.inject._
 
 import nl.sogyo.kbd.db.exceptions.MultipleUpdateException
+import nl.sogyo.kbd.users.User
 import play.api.db.Database
 
 import scala.concurrent.Future
@@ -10,74 +12,97 @@ import scala.concurrent.ExecutionContext.Implicits.global
 
 @Singleton
 class UserDB @Inject()(db: Database) extends UserCollection {
-  def checkIfEmailExists(email: String): Future[Boolean] = Future {
-    db.withConnection { conn =>
-      val preparedString =
-        """
-          |SELECT user_id
-          |FROM users
-          |WHERE email = ?;
-        """.
-          stripMargin
-      val statement = conn.prepareStatement(preparedString)
-      statement.setString(1, email)
-      val resultSet = statement.executeQuery
-      resultSet.first()
+
+  private val encryptionType = "bf"
+  private val rounds = "8"
+  private val gen_salt: String = s"gen_salt('$encryptionType', $rounds)"
+
+  def addUser(user: User, plainPassword: String): Future[Boolean] = Future {
+    db.withTransaction { conn =>
+      val usernameExists = doCheckIfUsernameExists(user, conn)
+      if (!usernameExists) doAddUser(user, plainPassword, conn)
+      else false
     }
   }
 
-  def addUser(email: String, plainPassword: String): Future[Boolean] = Future {
+  private def doAddUser(user: User, plainPassword: String, conn: Connection): Boolean = {
+    val preparedString =
+      s"""
+         |INSERT INTO users
+         |VALUES (?, crypt(?, $gen_salt));
+          """.stripMargin
+    val statement = conn.prepareStatement(preparedString)
+    statement.setString(1, user.username)
+    statement.setString(2, plainPassword)
+    val rowsAdded = statement.executeUpdate
+    rowsAdded == 1
+  }
+
+  def checkIfUsernameExists(user: User): Future[Boolean] = Future {
     db.withConnection { conn =>
-      val preparedString =
-        """
-          |INSERT INTO users
-          |VALUES (?, crypt(?, gen_salt('bf', 8)));
-        """.stripMargin
-      val statement = conn.prepareStatement(preparedString)
-      statement.setString(1, email)
-      statement.setString(2, plainPassword)
-      val rowsAdded = statement.executeUpdate
-      rowsAdded == 1
+      doCheckIfUsernameExists(user, conn)
     }
   }
 
-  def updatePassword(email: String, oldPlainPassword: String, newPlainPassword: String): Future[Boolean] =
-    login(email, oldPlainPassword).flatMap { e =>
-      if (e) {
-        Future {
-          db.withTransaction { conn =>
-            val preparedString =
-              """
-                |UPDATE users
-                |SET password = crypt(?, gen_salt('bf', 8))
-                |WHERE email = ?;
-              """.stripMargin
-            val statement = conn.prepareStatement(preparedString)
-            statement.setString(1, newPlainPassword)
-            statement.setString(2, email)
-            val rowsChanged = statement.executeUpdate
-            if (rowsChanged == 1) true
-            else if (rowsChanged == 0) false
-            else throw MultipleUpdateException("Multiple passwords were about to be updated!")
-          }
-        }
-      } else Future.successful(false)
-    }
+  private def doCheckIfUsernameExists(user: User, conn: Connection): Boolean = {
+    val preparedString =
+      """
+        |SELECT user_id
+        |FROM users
+        |WHERE username = ?;
+      """.
+        stripMargin
+    val statement = conn.prepareStatement(preparedString)
+    statement.setString(1, user.username)
+    val resultSet = statement.executeQuery
+    resultSet.first()
+  }
 
-  def login(email: String, plainPassword: String): Future[Boolean] = Future {
+  def updatePassword(user: User, oldPlainPassword: String, newPlainPassword: String): Future[Boolean] = Future {
+    db.withTransaction { conn =>
+      val login = doLogin(user, oldPlainPassword, conn)
+      if (login) doUpdatePassword(user, newPlainPassword, conn)
+      else false
+    }
+  }
+
+  private def doUpdatePassword(user: User, newPlainPassword: String, conn: Connection): Boolean = {
+    val preparedString =
+      s"""
+         |UPDATE users
+         |SET password = crypt(?, $gen_salt)
+         |WHERE username = ?;
+         """.stripMargin
+    val statement = conn.prepareStatement(preparedString)
+    statement.setString(1, newPlainPassword)
+    statement.setString(2, user.username)
+    val rowsChanged = statement.executeUpdate
+    if (rowsChanged == 1) true
+    else if (rowsChanged == 0) false
+    else throw
+      MultipleUpdateException("Multiple passwords were about to be updated!")
+  }
+
+  private def doLogin(user: User, plainPassword: String, conn: Connection): Boolean = {
+    val preparedString =
+      """
+        |SELECT (password = crypt(?, password)) AS pwmatch
+        |FROM users
+        |WHERE username = ?;
+      """.
+        stripMargin
+    val statement = conn.prepareStatement(preparedString)
+    statement.setString(1, user.username)
+    statement.setString(2, plainPassword)
+    val resultSet = statement.executeQuery
+    if(resultSet.next()) {
+      resultSet.getBoolean("pwmatch")
+    } else false
+  }
+
+  def login(user: User, plainPassword: String): Future[Boolean] = Future {
     db.withConnection { conn =>
-      val preparedString =
-        """
-          |SELECT *
-          |FROM USERS
-          |WHERE email = ?
-          |AND password = crypt(?, password);
-        """.stripMargin
-      val statement = conn.prepareStatement(preparedString)
-      statement.setString(1, email)
-      statement.setString(2, plainPassword)
-      val resultSet = statement.executeQuery
-      resultSet.first()
+      doLogin(user, plainPassword, conn)
     }
   }
 }

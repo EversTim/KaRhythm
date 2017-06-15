@@ -1,3 +1,8 @@
+body {
+  background-color: #2f3451;
+  color: white;
+}
+
 .patternNameDiv {
   margin-bottom: 20px;
 }
@@ -24,4 +29,16 @@ input[type=hidden] {
 .errors {
   display: inline;
   color: red;
+}
+
+.button {
+  display: inline;
+  background-color: #496cb2;
+  color: white;
+  text-decoration: none;
+  padding: 10px;
+  border-style: solid;
+  border-color: black;
+  border-width: 5px;
+  border-radius: 5px;
 }

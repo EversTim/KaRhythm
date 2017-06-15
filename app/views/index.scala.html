@@ -1,8 +1,12 @@
 @import nl.sogyo.kbd.forms._
-@(map: Option[Map[Int, String]], allSoundNames: Option[Seq[Option[String]]], patternForm: Form[PatternForm])(implicit messages: Messages, rh: RequestHeader)
+@(map: Option[Map[Int, String]], allSoundNames: Option[Seq[Option[String]]], patternForm: Form[PatternForm], hasLoggedIn: Boolean)(implicit messages: Messages, rh: RequestHeader)
 @implicitField = @{ helper.FieldConstructor(plainFieldConstructor.f) }
 
-@main("KBD") {
+@main("KBD"){
+    <link rel='stylesheet' media='screen' href='@routes.Assets.versioned("stylesheets/checkboxes.css")' />
+    <link rel='stylesheet' media='screen' href='@routes.Assets.versioned("stylesheets/controls.css")' />
+    <link rel='stylesheet' media='screen' href='@routes.Assets.versioned("stylesheets/track.css")' />
+}{
     <h1>KBD</h1>
     @helper.form(routes.PatternController.postPattern, 'id -> "pattern_form") {
         @helper.CSRF.formField
@@ -15,10 +19,18 @@
         </div>
         @checkboxFormPart(patternForm, allSoundNames)
         @trackAndLengthFormPart(patternForm)
-        <button type='submit' id='saveButton'>Save</button>
+        <button type='submit' id='saveButton' class='button'>Save</button>
     }
     @controls() <br />
     @if(!map.isEmpty) { @insertAudio(map.get) }
+
+    <div id='logbutton'>
+        @if(hasLoggedIn) {
+            <a href='/logout' class='button'>Log out</a>
+        } else {
+            <a href='login' class='button'>Log in</a>
+        }
+    </div>
     <script src='@routes.Assets.versioned("javascripts/Utilities.js")' type='text/javascript'></script>
     <script src='@routes.Assets.versioned("javascripts/Pattern.js")' type='text/javascript'></script>
     <script src='@routes.Assets.versioned("javascripts/Player.js")' type='text/javascript'></script>
