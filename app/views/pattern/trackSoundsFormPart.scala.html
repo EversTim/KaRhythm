@@ -1,15 +1,13 @@
 @(trackNumber: Int, id: String, name: String, value: Option[String], allSoundNames: Option[Seq[Option[String]]])
 
-@if(!allSoundNames.isEmpty) {
 <select id='sound_@{trackNumber}' name='soundnames[@trackNumber]'>
+@if(!allSoundNames.isEmpty) {
     @for( sn <- allSoundNames.get ) {
         <option id='sound_@{trackNumber}_@{sn}' name='soundnames[@trackNumber]' value='@sn'
         @if(sn==value) { selected } >@sn</option>
     }
-</select>
 } else {
-<select id='sound_@{trackNumber}' name='soundnames[@trackNumber]'>
     <option id='sound_@{trackNumber}_@{value}' name='soundnames[@trackNumber]' value='@value'
             selected>@value</option>
-</select>
 }
+</select>

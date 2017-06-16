@@ -28,27 +28,32 @@ class PatternDB @Inject()(db: Database) extends PatternCollection {
       val statement = conn.prepareStatement(preparedString)
       statement.setInt(1, id)
       val resultSet = statement.executeQuery
-
-      patternFromResultSet(resultSet)
+      val hasResult = resultSet.next()
+      if (hasResult) singlePatternFromResultSet(resultSet)
+      else None
     }
   }
 
-  private def patternFromResultSet(resultSet: ResultSet): Option[Pattern] = {
+  // Expects input of the form "pattern name, track name, sound name, sound file location".
+  // with result set cursor set on the first row of the pattern.
+  // It leaves the cursor after the last row of the pattern.
+  private def singlePatternFromResultSet(resultSet: ResultSet): Option[Pattern] = {
     val tracks = mutable.Buffer[Track]()
 
-    var patternName: String = null
-    var hasAnswer = false
-    while (resultSet.next()) {
-      hasAnswer = true
-      patternName = resultSet.getString(1)
-      val trackName = resultSet.getString(2)
-      val data = stringToBoolSeq(resultSet.getString(3))
-      val soundName = resultSet.getString(4)
-      val soundLocation = resultSet.getString(5)
-      tracks += Track(trackName, Sound(soundName, soundLocation), data: _*)
-    }
-    if (hasAnswer) Some(Pattern(patternName, tracks: _*))
-    else None
+    val patternName: String = resultSet.getString(1)
+    var curPName: String = null
+    do {
+      curPName = resultSet.getString(1)
+      if (curPName == patternName) {
+        val trackName = resultSet.getString(2)
+        val data = stringToBoolSeq(resultSet.getString(3))
+        val soundName = resultSet.getString(4)
+        val soundLocation = resultSet.getString(5)
+        tracks += Track(trackName, Sound(soundName, soundLocation), data: _*)
+      }
+    } while (resultSet.next() && (patternName == curPName))
+
+    Some(Pattern(patternName, tracks: _*))
   }
 
   def insert(p: Pattern, u: User): Future[Int] = Future {
@@ -105,7 +110,7 @@ class PatternDB @Inject()(db: Database) extends PatternCollection {
     resultSet.getInt(1)
   }
 
-  def findByUser(user: User): Future[Seq[Int]] = Future {
+  def findByUser(user: User): Future[Seq[Pattern]] = Future {
     db.withConnection { conn =>
       val patternString =
         """
@@ -116,8 +121,18 @@ class PatternDB @Inject()(db: Database) extends PatternCollection {
       val patternStatement = conn.prepareStatement(patternString)
       patternStatement.setString(1, user.username)
       val resultSet = patternStatement.executeQuery
-      val output = Seq.empty[Int]
-      ???
+      val hasResults = resultSet.next()
+      if(!hasResults) Seq.empty[Pattern]
+      else {
+        val outputOpt= new mutable.ArrayBuffer[Option[Pattern]]()
+        do {
+          outputOpt += singlePatternFromResultSet(resultSet)
+        } while (outputOpt.last.isDefined)
+        outputOpt.map{
+          case Some(p) => p
+          case None => Nil
+        }
+      }
     }
   }
 }

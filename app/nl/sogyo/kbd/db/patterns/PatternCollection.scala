@@ -12,5 +12,5 @@ trait PatternCollection {
 
   def insert(p: Pattern, u: User): Future[Int]
 
-  def findByUser(user: User): Future[Seq[Int]]
+  def findByUser(user: User): Future[Seq[Pattern]]
 }
