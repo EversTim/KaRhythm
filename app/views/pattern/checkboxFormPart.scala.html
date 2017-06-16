@@ -1,4 +1,4 @@
-@import nl.sogyo.kbd.forms._
+@import nl.sogyo.karhythm.forms._
 @(patternForm: Form[PatternForm], allSoundNames: Option[Seq[Option[String]]])(implicit messages: Messages)
 @implicitField = @{ helper.FieldConstructor(checkboxFieldConstructor.f) }
 @helper.repeatWithIndex(patternForm("boxes")) { (s, trackNumber) =>

@@ -1,7 +1,7 @@
 import com.google.inject._
-import nl.sogyo.kbd.db.patterns._
-import nl.sogyo.kbd.db.sounds._
-import nl.sogyo.kbd.db.users._
+import nl.sogyo.karhythm.db.patterns._
+import nl.sogyo.karhythm.db.sounds._
+import nl.sogyo.karhythm.db.users._
 
 class Module extends AbstractModule {
   def configure(): Unit = {

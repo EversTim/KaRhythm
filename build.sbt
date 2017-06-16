@@ -1,4 +1,4 @@
-name := """KBD"""
+name := """KaRhythm"""
 organization := "nl.sogyo"
 
 version := "1.0-SNAPSHOT"

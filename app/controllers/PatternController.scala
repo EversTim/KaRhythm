@@ -7,12 +7,12 @@ import play.api.data._
 import play.api.data.Forms._
 import play.api.Play.current
 import play.api.i18n.Messages.Implicits._
-import nl.sogyo.kbd.db.patterns.PatternCollection
-import nl.sogyo.kbd.db.sounds.SoundCollection
-import nl.sogyo.kbd.domain.{Pattern, Track}
-import nl.sogyo.kbd.forms._
-import nl.sogyo.kbd.actionsrequests._
-import nl.sogyo.kbd.users.User
+import nl.sogyo.karhythm.db.patterns.PatternCollection
+import nl.sogyo.karhythm.db.sounds.SoundCollection
+import nl.sogyo.karhythm.domain.{Pattern, Track}
+import nl.sogyo.karhythm.forms._
+import nl.sogyo.karhythm.actionsrequests._
+import nl.sogyo.karhythm.users.User
 
 import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global

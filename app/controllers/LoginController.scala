@@ -2,9 +2,9 @@ package controllers
 
 import javax.inject._
 
-import nl.sogyo.kbd.db.users.UserCollection
-import nl.sogyo.kbd.forms._
-import nl.sogyo.kbd.users.User
+import nl.sogyo.karhythm.db.users.UserCollection
+import nl.sogyo.karhythm.forms._
+import nl.sogyo.karhythm.users.User
 import play.api.data.Form
 import play.api.data.Forms._
 import play.api.mvc._
